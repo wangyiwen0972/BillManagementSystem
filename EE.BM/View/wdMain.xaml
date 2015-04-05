@@ -1,0 +1,11 @@
+﻿<my:WindowBase x:Class="EE.BM.View.wdMain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="w"
+        xmlns:my="clr-namespace:EE.BM.View"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Title="Bill Management Studio" Height="300" Width="300">
+    <Grid>
+        
+    </Grid>
+</my:WindowBase>
