@@ -17,6 +17,11 @@ namespace EE.BM.DAL
             return User.FirstOrDefault<UserModel>(u => u.ID == ID);
         }
 
+        public static UserModel Find(this ITable<UserModel> User, string userName, string password)
+        {
+            return User.FirstOrDefault<UserModel>(u => u.LoginName.ToLower() == userName.ToLower() && u.Password == password);
+        }
+
         public static bool New(this ITable<UserModel> User, string userName,string password,string display, int rightID)
         {
             bool result = false;
@@ -46,6 +51,28 @@ namespace EE.BM.DAL
         public static RightModel Find(this ITable<RightModel> Right, int ID)
         {
             return Right.FirstOrDefault<RightModel>(u => u.ID == ID);
+        }
+
+        public static bool New(this ITable<RightModel> Right, string cname, string ename, string comment)
+        {
+            bool result = false;
+            try
+            {
+                if (Right.Insert(() => new RightModel()
+                {
+                    C_Name = cname,
+                    E_Name = ename,
+                    Comments = comment
+                }) > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.CreateLogger().WriteError(string.Format("Create right failed. Exception: {0}", ex.Message));
+            }
+            return result;
         }
 
         #endregion

@@ -22,7 +22,6 @@ namespace EE.BM.View
         public wdLogin()
         {
             InitializeComponent();
-
         }
     }
 }

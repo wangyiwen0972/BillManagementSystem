@@ -8,7 +8,7 @@ namespace EE.BM.Utility
 {
     public static class Helper
     {
-        private const string Key = "StephenIsAGoodMan";
+        private const string Key = "StephenI";
         public static string Encrypt(string pToEncrypt)
         {
             using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())

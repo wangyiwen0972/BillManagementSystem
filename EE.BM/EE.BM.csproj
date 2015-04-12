@@ -64,11 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DAL\CopyMe.Access1.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CopyMe.Access.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Core\NotificationObject.cs" />
     <Compile Include="DAL\DBConnection.cs" />
     <Compile Include="DAL\DBExtension.cs" />
     <Compile Include="Export\Excel.cs" />
@@ -77,6 +74,9 @@
     <Compile Include="Model\RightModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Utility\Helper.cs" />
+    <Compile Include="ViewModel\IViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\ReceiptViewModel.cs" />
     <Compile Include="View\Base\ConfigManage.cs" />
     <Compile Include="View\Base\WindowBase.cs" />
     <Compile Include="View\UserControl\UserImage.cs" />
@@ -156,8 +156,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="database\" />
     <Folder Include="Interface\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\progress.gif" />
@@ -166,16 +166,27 @@
     <Resource Include="LinqToDB.Templates\CopyMe.Access.tt.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DAL\CopyMe.Access.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CopyMe.Access1.generated.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\1_110909153027_1.png" />
+    <Content Include="Resources\1_110909153027_1.png" />
+    <Resource Include="Resources\Save.png" />
+    <Resource Include="Resources\idecl.png" />
+    <Resource Include="Resources\Folder Printer.png" />
+    <Resource Include="Resources\Page preview.png" />
+    <Resource Include="Resources\Page remove.png" />
+    <Resource Include="Resources\Document.png" />
+    <Resource Include="Resources\Copy_Document.png" />
+    <Resource Include="Resources\excel.png" />
+    <Resource Include="Resources\Close.png" />
+    <Content Include="Resources\Folder generic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\Folder library.png" />
+    <Resource Include="Resources\Folder private alternative.png" />
+    <Resource Include="Resources\Fonts.png" />
+    <Resource Include="Resources\Generic Folder smooth.png" />
+    <Resource Include="Resources\System Folder smooth.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

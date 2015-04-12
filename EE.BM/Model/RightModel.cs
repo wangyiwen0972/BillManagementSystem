@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using LinqToDB.Mapping;
 using LinqToDB.Data;
 using EE.BM.DAL;
-
+using System.Configuration;
 
 namespace EE.BM.Model
 {
@@ -17,9 +17,9 @@ namespace EE.BM.Model
         {
             if (dbConnection == null)
             {
-                dbConnection = new BMConnection();
+                dbConnection = new BMConnection(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationSettings.AppSettings["database"].ToString()));
             }
-
+            
             return dbConnection;
         }
     }

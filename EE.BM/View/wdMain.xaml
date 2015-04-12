@@ -3,9 +3,254 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="w"
         xmlns:my="clr-namespace:EE.BM.View"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
-        Title="Bill Management Studio" Height="300" Width="300">
+        Title="Bill Management Studio" Height="808" Width="1024">
     <Grid>
-        
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_系统">
+                    <MenuItem Header="_New..." />
+                    <MenuItem Header="_Open..." />
+                    <Separator />
+                    <MenuItem Header="Sen_d To">
+                        <MenuItem Header="Mail Recipient" />
+                        <MenuItem Header="My Documents" />
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_设置">
+                    <MenuItem Header="_参数设置..."/>
+                    <MenuItem Header="_用户管理..."/>
+                    <MenuItem Header="_接口设置..."/>
+                    <MenuItem Header="_打印设置..."/>
+                    <Separator/>
+                    <MenuItem Header="_系统设置..."/>
+                </MenuItem>
+                <MenuItem Header="_数据维护">
+                    <MenuItem Header="_品名维护"/>
+                    <MenuItem Header="_经营单位维护"/>
+                    <MenuItem Header="_港口维护"/>
+                </MenuItem>
+                <MenuItem Header="_帮助">
+                </MenuItem>
+            </Menu>
+            <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
+                <ToolBar Band="1" BandIndex="1" Loaded="ToolBar_Loaded">
+                    <Button Name="btnNew">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/Document.png"/>
+                            <TextBlock Text="新建" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnOpen">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/Generic Folder smooth.png"/>
+                            <TextBlock Text="打开" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnSave">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/Save.png" Height="32"/>
+                            <TextBlock Text="保存" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnCopy">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/Copy_Document.png"/>
+                            <TextBlock Text="复制" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnDelete">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/Page remove.png"/>
+                            <TextBlock Text="删除" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnPreview">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/Page preview.png" Height="32"/>
+                            <TextBlock Text="打印预览" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnPrient">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/Folder Printer.png" Height="32"/>
+                            <TextBlock Text="打印" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnExport">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/excel.png" Height="32"/>
+                            <TextBlock Text="生成Excel" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnExportToIdecl">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/idecl.png" Height="32"/>
+                            <TextBlock Text="导出到九城单证" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnClose">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/BMStudio;component/resources/close.png" Height="32"/>
+                            <TextBlock Text="关闭" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
+            <TabControl DockPanel.Dock="Top">
+                <TabItem Header="数据录入" >
+                    <StackPanel DockPanel.Dock="Top">
+                        <Border x:Name="borderBg" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="FontWeight" Value="Light"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="录入人员:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBox Name="txtUser" Grid.Row="0" Grid.Column="1" Width="150" Height="25" IsEnabled="False"/>
+                                <Label Content="录入时间:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
+                                <TextBox Name="txtInputTime" Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEnabled="False"/>
+                                <Label Content="数据状态:" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"/>
+                                <TextBox Name="txtRecordStatus" Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEnabled="False"/>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="borderBg1" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="FontWeight" Value="Light"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="日期:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <DatePicker Grid.Row="0" Grid.Column="1" Width="150" Height="25" />
+                                <Label Content="港口:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <ComboBox Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEditable="True"/>
+                                <Label Content="经营单位:" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEditable="True" HorizontalAlignment="Left" />
+                                <Label Content="品名:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <ComboBox Width="150" Grid.Row="1" Grid.Column="1" Height="25"/>
+                                <Label Content="箱量:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25"/>
+                                <Label Content="提单号:" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="5" Height="25" HorizontalAlignment="Left"/>
+                                <Label Content="联系人:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <TextBox Width="150" Grid.Row="2" Grid.Column="1" Height="25"/>
+                                <Label Content="联系电话:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <TextBox Width="150" Grid.Row="2" Grid.Column="3" Height="25"/>
+                                <Label Content="备注:" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="5">
+                                    <RichTextBox Grid.Row="2" Grid.Column="5" Height="25"  IsEnabled="False" Width="350" />
+                                    <Button Content="..." Width="50" Height="25" Margin="5"/>
+                                </StackPanel>
+                                
+                            </Grid>
+                        </Border>
+                        <Border x:Name="borderBg2" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="FontWeight" Value="Light"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="动检:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <CheckBox Content="是否动检" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
+                                <Label Content="动检号:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <TextBox Width="150" Grid.Row="0" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left"/>
+                                <Label Content="商检:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <CheckBox Content="是否商检" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+                                <Label Content="商检号:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left"/>
+                                <Label Content="卫检:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <CheckBox Content="是否卫检" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
+                                <Label Content="卫检号:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <TextBox Width="150" Grid.Row="2" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left"/>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="borderBg3" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="FontWeight" Value="Light"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="检疫费:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <TextBox  Grid.Row="0" Grid.Column="1" Width="150" Height="25" IsEnabled="False"/>
+                                <Label Content="检疫支票:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <TextBox  Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEnabled="False"/>
+                                <Label Content="消毒费:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="1" Height="25"/>
+                                <Label Content="消毒支票:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="数据查询">
+                    
+                </TabItem>
+            </TabControl>
+            
+        </DockPanel>
     </Grid>
 </my:WindowBase>
