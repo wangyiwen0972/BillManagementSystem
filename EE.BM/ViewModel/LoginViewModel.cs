@@ -10,7 +10,7 @@ using LinqToDB.DataProvider.Access;
 using System.Windows.Controls;
 namespace EE.BM
 {
-    public class LoginViewModel:NotificationObject
+    public class LoginViewModel:NotificationObject, IViewModel
     {
         #region private variables
         private BMConnection dbConnection = null;
@@ -69,7 +69,7 @@ namespace EE.BM
                 base.SetProperty<string>(ref userPassword, value, () => this.UserPassword);
             }
         }
-
+        
         #endregion
 
         #region private methods

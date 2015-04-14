@@ -100,5 +100,15 @@ namespace EE.BM.Model
         /// </summary>
         [Column]
         public DateTime Date { get; set; }
+        /// <summary>
+        /// 港口
+        /// </summary>
+        [Column]
+        public string Port { get; set; }
+        /// <summary>
+        /// 联系人
+        /// </summary>
+        [Column]
+        public string Contacter { get; set; }
     }
 }
