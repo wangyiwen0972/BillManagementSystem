@@ -98,13 +98,18 @@
     </Style>
 
     <!--RichTextBox Style-->
-    <Style x:Key="rtbStyle" TargetType="RichTextBox">
+    <Style x:Key="rtbStyle" TargetType="TextBox">
         <Setter Property="Margin" Value="5,5,5,5"></Setter>
         <Setter Property="Cursor" Value="Hand"></Setter>
         <Setter Property="Opacity" Value=".75"></Setter>
-        <Setter Property="Template">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <!--<Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="RichTextBox">
+                <ControlTemplate TargetType="TextBox">
                     <Border BorderThickness="1" HorizontalAlignment="Center" Background="Transparent" Width="{TemplateBinding Width}">
 
                         <AdornerDecorator x:Name="PART_ContentHost" Focusable="False" />
@@ -112,6 +117,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        -->
     </Style>
 
     <Style x:Key="statusTxtStyle" TargetType="TextBlock">
@@ -231,14 +237,10 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="1"></RowDefinition>
                         <RowDefinition Height="30"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" Background="#4f535d" CornerRadius="{StaticResource winTitleCorner}" Style="{StaticResource titleStyle}"></Border>
-                    <Canvas Grid.Row="2" Background="#42464d">
-
-                    </Canvas>
-                    <Border Grid.Row="3" CornerRadius="{StaticResource winStatusCorner}"></Border>
+                    <Border Grid.Row="2" CornerRadius="{StaticResource winStatusCorner}"></Border>
                 </Grid>
             </Border>
 
@@ -247,7 +249,7 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="1"></RowDefinition>
-                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
                 </Grid.RowDefinitions>
                 <!--标题栏框-->
 
@@ -264,7 +266,7 @@
                 </Border>
                 <!--内容-->
                 <Grid x:Name="gridContent" Grid.Row="1" Margin="6">
-                    <my:UserImage x:Name="imgProgress" Width="80" Height="80" Visibility="Hidden" />
+                    <my:UserImage x:Name="imgProgress" Width="80" Height="80" Visibility="Visible" />
                     <ProgressBar x:Name="pbWorkProgress" Maximum="100" Minimum="0" Value="0" Width="100" Height="20" Style="{StaticResource ProgressBarStyle}" Visibility="Hidden" />
                     <ContentPresenter />
                 </Grid>
@@ -273,7 +275,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
                         <!--<Button x:Name="btnYes" Style="{StaticResource btnStyle}"></Button>
                         <Button x:Name="btnNo" Style="{StaticResource btnStyle}"></Button>-->
-                        <RichTextBox x:Name="rtbStatus" Style="{StaticResource rtbStyle}" Width="{Binding ElementName=w, Path=Width}"></RichTextBox>
+                        <TextBox x:Name="rtbStatus" Style="{StaticResource rtbStyle}" Width="{Binding ElementName=w, Path=Width}" Text="{Binding OutputMessage}"></TextBox>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -1225,10 +1227,9 @@
     <Style x:Key="buttonMouseOver" TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-
                 <Setter Property="Background">
                     <Setter.Value>
-                        <ImageBrush ImageSource="/Financial;component/Images/main/mouseOver.png" />
+                        White
                     </Setter.Value>
                 </Setter>
             </Trigger>

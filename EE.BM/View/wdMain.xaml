@@ -5,7 +5,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Bill Management Studio" Height="808" Width="1024">
     <Grid>
-        <DockPanel>
+        <DockPanel >
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_系统">
                     <MenuItem Header="_New..." />
@@ -46,7 +46,7 @@
                             <TextBlock Text="打开" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button Name="btnSave">
+                    <Button Name="btnSave" Command="{Binding SaveCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/BMStudio;component/resources/Save.png" Height="32"/>
                             <TextBlock Text="保存" VerticalAlignment="Center"/>
@@ -121,14 +121,14 @@
                                     <ColumnDefinition Width="151"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="录入人员:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                                <TextBox Name="txtUser" Grid.Row="0" Grid.Column="1" Width="150" Height="25" IsEnabled="False"/>
+                                <TextBox Name="txtUser" Grid.Row="0" Grid.Column="1" Width="150" Height="25" IsEnabled="False" Text="{Binding Inputer,Mode=OneWay}"/>
                                 <Label Content="录入时间:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
-                                <TextBox Name="txtInputTime" Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEnabled="False"/>
+                                <TextBox Name="txtInputTime" Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEnabled="False" Text="{Binding InputDate,Mode=OneWay}"/>
                                 <Label Content="数据状态:" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"/>
-                                <TextBox Name="txtRecordStatus" Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEnabled="False"/>
+                                <TextBox Name="txtRecordStatus" Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEnabled="False" Text="{Binding Status,Mode=TwoWay}"/>
                             </Grid>
                         </Border>
-                        <Border x:Name="borderBg1" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
+                        <Border x:Name="borderBg1" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}" Height="auto">
                             <Grid>
                                 <Grid.Resources>
                                     <Style TargetType="Label">
@@ -141,7 +141,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="50"></RowDefinition>
                                     <RowDefinition Height="50"></RowDefinition>
-                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="80"/>
@@ -152,27 +152,50 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="日期:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <DatePicker Grid.Row="0" Grid.Column="1" Width="150" Height="25" />
+                                <DatePicker Grid.Row="0" Grid.Column="1" Width="150" Height="25" Text="{Binding Date,Mode=TwoWay}" />
                                 <Label Content="港口:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <ComboBox Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEditable="True"/>
+                                <ComboBox Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEditable="True" ItemsSource="{Binding PortList,Mode=TwoWay}" SelectedItem="{Binding Port, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" FocusableChanged="ComboBox_FocusableChanged" Text="{Binding Port,Mode=TwoWay}"/>
                                 <Label Content="经营单位:" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEditable="True" HorizontalAlignment="Left" />
+                                <ComboBox Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEditable="True" HorizontalAlignment="Left" ItemsSource="{Binding CompanyList, Mode=TwoWay}" Text="{Binding Company,Mode=TwoWay}" SelectedValue="{Binding Company,Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" />
                                 <Label Content="品名:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <ComboBox Width="150" Grid.Row="1" Grid.Column="1" Height="25"/>
+                                <ComboBox Width="150" Grid.Row="1" Grid.Column="1" Height="25" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" ItemsSource="{Binding ProductLsit}" Text="{Binding Production,Mode=TwoWay}" SelectedItem="{Binding Production, Mode=TwoWay}" IsEditable="True"/>
                                 <Label Content="箱量:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25" Text="{Binding Container, Mode=TwoWay}"/>
                                 <Label Content="提单号:" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <TextBox Width="150" Grid.Row="1" Grid.Column="5" Height="25" HorizontalAlignment="Left"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="5" Height="25" HorizontalAlignment="Left" Text="{Binding BLNO,Mode=TwoWay}"/>
                                 <Label Content="联系人:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <TextBox Width="150" Grid.Row="2" Grid.Column="1" Height="25"/>
+                                <TextBox Width="150" Grid.Row="2" Grid.Column="1" Height="25" Text="{Binding Contacter,Mode=TwoWay}"/>
                                 <Label Content="联系电话:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
                                 <TextBox Width="150" Grid.Row="2" Grid.Column="3" Height="25"/>
                                 <Label Content="备注:" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
                                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="5">
-                                    <RichTextBox Grid.Row="2" Grid.Column="5" Height="25"  IsEnabled="False" Width="350" />
-                                    <Button Content="..." Width="50" Height="25" Margin="5"/>
+                                    <TextBox Grid.Row="2" Name="txtRemark" Grid.Column="5" Height="25" Width="350" Text="{Binding Remark}" AcceptsReturn="True" TextWrapping="WrapWithOverflow"  >
+                                        <TextBox.Resources>
+                                            <Style TargetType="TextBox" >
+                                                <Style.Triggers>
+                                                    <EventTrigger RoutedEvent="TextBox.GotFocus">
+                                                        <EventTrigger.Actions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation  Duration="0:0:0.2"  Storyboard.TargetProperty="Height"  To="100"  />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger.Actions>
+                                                    </EventTrigger>
+                                                    <EventTrigger RoutedEvent="TextBox.LostFocus">
+                                                        <EventTrigger.Actions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation  Duration="0:0:0.2"  Storyboard.TargetProperty="Height"  To="25"  />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger.Actions>
+                                                    </EventTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Resources>
+                                    </TextBox>
                                 </StackPanel>
-                                
                             </Grid>
                         </Border>
                         <Border x:Name="borderBg2" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
@@ -183,6 +206,13 @@
                                         <Setter Property="FontFamily" Value="Microsoft YaHei"/>
                                         <Setter Property="FontSize" Value="13"/>
                                         <Setter Property="FontWeight" Value="Light"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type TextBox}" x:Key="enable">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbAnimal,Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
                                     </Style>
                                 </Grid.Resources>
                                 <Grid.RowDefinitions>
@@ -199,9 +229,15 @@
                                     <ColumnDefinition Width="151"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="动检:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <CheckBox Content="是否动检" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
+                                <CheckBox Name="cbAnimal" Content="是否动检" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                                    <CheckBox.Resources>
+                                        
+                                    </CheckBox.Resources>
+                                </CheckBox>
                                 <Label Content="动检号:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <TextBox Width="150" Grid.Row="0" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left"/>
+                                <TextBox Style="{StaticResource enable}"  Name="txtAnimal" Width="150" Grid.Row="0" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left">
+                                    
+                                </TextBox>
                                 <Label Content="商检:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
                                 <CheckBox Content="是否商检" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
                                 <Label Content="商检号:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -235,9 +271,9 @@
                                     <ColumnDefinition Width="151"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="检疫费:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <TextBox  Grid.Row="0" Grid.Column="1" Width="150" Height="25" IsEnabled="False"/>
+                                <TextBox  Grid.Row="0" Grid.Column="1" Width="150" Height="25" />
                                 <Label Content="检疫支票:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <TextBox  Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEnabled="False"/>
+                                <TextBox  Grid.Row="0" Grid.Column="3" Width="150" Height="25" />
                                 <Label Content="消毒费:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
                                 <TextBox Width="150" Grid.Row="1" Grid.Column="1" Height="25"/>
                                 <Label Content="消毒支票:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -245,12 +281,12 @@
                             </Grid>
                         </Border>
                     </StackPanel>
+                    
                 </TabItem>
                 <TabItem Header="数据查询">
                     
                 </TabItem>
             </TabControl>
-            
         </DockPanel>
     </Grid>
 </my:WindowBase>

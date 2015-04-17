@@ -106,6 +106,18 @@ namespace EE.BM.DAL
             return result;
         }
 
+        public static bool NewReceipt(this ITable<ReceiptModel> Receipt, ReceiptModel receiptModel)
+        {
+            return Receipt.NewReceipt(receiptModel.Client,receiptModel.Company,receiptModel.Production,receiptModel.BLNO,receiptModel.Container,receiptModel.AnimalNo
+                , receiptModel.Place,receiptModel.IsCommercial,receiptModel.IsAnimal,receiptModel.IsHealth,receiptModel.Remark,receiptModel.DiseaseFee,
+                receiptModel.DisinfectFee,receiptModel.DiseaseChequeNo,receiptModel.DisinfectChequeNo,receiptModel.Mobile,receiptModel.Date);
+        }
+
+        public static bool UpdateReceipt(this ITable<ReceiptModel> Receipt, ReceiptModel receiptModel)
+        {
+            return Receipt.Update<ReceiptModel>(r => receiptModel) > 0 ? true : false;
+        }
+
         #endregion
     }
 }

@@ -19,11 +19,12 @@ namespace EE.BM
             base.OnStartup(e);
 
             //set the main window here
-            //var mainWindow = new wdLogin();
-            var mainWindow = new wdMain();
+            var mainWindow = new wdLogin();
+            //var mainWindow = new wdMain();
             Application.Current.MainWindow = mainWindow;
 
             LoginViewModel loginViewModel = new LoginViewModel();
+            //ReceiptViewModel viewmodel = new ReceiptViewModel();
             //set data context here
             mainWindow.DataContext = loginViewModel;
 
@@ -33,6 +34,7 @@ namespace EE.BM
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show(e.Exception.Message);
+            e.Handled = true;
         }
 
         

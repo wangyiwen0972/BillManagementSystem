@@ -47,7 +47,14 @@ namespace EE.BM.Utility
                 ms.Close();
                 return str;
             }
-        }  
+        }
+
+        public static object CreateKeyValueObject(string display, string value)
+        {
+            object rtnObject = new { DisplayMember = display, ValueMember = value };
+
+            return rtnObject;
+        }
 
     }
 }

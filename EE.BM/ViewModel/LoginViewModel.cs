@@ -10,7 +10,7 @@ using LinqToDB.DataProvider.Access;
 using System.Windows.Controls;
 namespace EE.BM
 {
-    public class LoginViewModel:NotificationObject, IViewModel
+    public class LoginViewModel:NotificationObject,IViewModel
     {
         #region private variables
         private BMConnection dbConnection = null;
@@ -90,6 +90,10 @@ namespace EE.BM
             {
                 throw new Exception("用户名、密码错误。请联系管理员。");
             }
+            else
+            {
+                loginUser = userModel;
+            }
         }
 
         private void Register(object parameter)
@@ -105,5 +109,33 @@ namespace EE.BM
             }
         }
         #endregion
+        private string message;
+        public string OutputMessage
+        {
+            get
+            {
+                return message;
+            }
+            set
+            {
+                base.SetProperty<string>(ref message, value, () => this.OutputMessage);
+            }
+        }
+
+        public ViewModelStatus GetCurrentStatus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetCurrentStats(ViewModelStatus status)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public UserModel GetCurrentLoginUser()
+        {
+            return this.loginUser;
+        }
     }
 }

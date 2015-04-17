@@ -55,5 +55,10 @@ namespace EE.BM.View
                 mainPanelBorder.Margin = new Thickness(0);
             }
         }
+
+        private void ComboBox_FocusableChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            
+        }
     }
 }
