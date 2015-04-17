@@ -93,6 +93,18 @@ namespace EE.BM.DAL
             {
                 if (Receipt.Insert(() => new ReceiptModel()
                 {
+                    Client = Client,
+                    Company = Company,
+                    Production = Production,
+                    BLNO = BLNO,
+                    Container = Container,
+                    AnimalNo = AnimalNo,
+                    Place = Place,
+                    IsCommercial = IsCommercial,
+                    IsAnimal = IsAnimal,
+                    IsHealth = IsHealth,
+                    Mobile = Mobile,
+                    Date = Date
                 }) > 0)
                 {
                     result = true;
@@ -115,7 +127,12 @@ namespace EE.BM.DAL
 
         public static bool UpdateReceipt(this ITable<ReceiptModel> Receipt, ReceiptModel receiptModel)
         {
-            return Receipt.Update<ReceiptModel>(r => receiptModel) > 0 ? true : false;
+            return Receipt.Where(u => u.ID == receiptModel.ID).Set(p => p, receiptModel).Update() > 0 ? true : false;
+        }
+
+        public static bool DeleteReceipt(this ITable<ReceiptModel> Receipt, int ID)
+        {
+            return Receipt.Where(u => u.ID == ID).Delete() > 0 ? true : false;
         }
 
         #endregion
