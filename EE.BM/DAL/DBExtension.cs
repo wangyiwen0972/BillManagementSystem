@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EE.BM.Model;
 using EE.BM.Utility;
 using LinqToDB;
+using LinqToDB.Data;
 
 namespace EE.BM.DAL
 {
@@ -78,20 +79,19 @@ namespace EE.BM.DAL
         #endregion
 
         #region Receipt Extension
-        public static ReceiptModel Find(this ITable<ReceiptModel> Receipt, int ID)
+        public static ReceiptModel Receipt_Find(this ITable<ReceiptModel> Receipt, int ID)
         {
             return Receipt.FirstOrDefault(r=>r.ID == ID);
         }
 
-        public static bool NewReceipt(this ITable<ReceiptModel> Receipt, string Client, string Company, string Production,
+        private static ReceiptModel Receipt_Insert(this ITable<ReceiptModel> Receipt, string Client, string Company, string Production,
             string BLNO, string Container, string AnimalNo, string Place, bool IsCommercial, bool IsAnimal, bool IsHealth,
             string Remark, decimal DiseaseFee, decimal DisinfectFee, string DiseaseChequeNo, string DisinfectChequeNo,
-            string Mobile, DateTime Date)
+            string Mobile, string Date, string Port, string Contacter)
         {
-            bool result = false;
             try
             {
-                if (Receipt.Insert(() => new ReceiptModel()
+                int iResult = Receipt.Insert(() => new ReceiptModel()
                 {
                     Client = Client,
                     Company = Company,
@@ -104,33 +104,78 @@ namespace EE.BM.DAL
                     IsAnimal = IsAnimal,
                     IsHealth = IsHealth,
                     Mobile = Mobile,
-                    Date = Date
-                }) > 0)
-                {
-                    result = true;
-                }
+                    YearMonth = Date,
+                    Remark = Remark,
+                    Port = Port,
+                    Contacter = Contacter,
+                    DiseaseFee = DiseaseFee,
+                    DiseaseChequeNo = DiseaseChequeNo,
+                    DisinfectFee = DisinfectFee,
+                    DisinfectChequeNo = DisinfectChequeNo
+                });
+                ReceiptModel current = Receipt.Single((e) => e.YearMonth == Date);
+
+                return current;
             }
             catch (Exception ex)
             {
 
                 Logger.CreateLogger().WriteError(string.Format("Create receipt failed. Exception: {0}", ex.Message));
             }
-            return result;
+            return null;
         }
 
-        public static bool NewReceipt(this ITable<ReceiptModel> Receipt, ReceiptModel receiptModel)
+        public static bool Receipt_Insert(this ITable<ReceiptModel> Receipt, ref ReceiptModel receiptModel)
         {
-            return Receipt.NewReceipt(receiptModel.Client,receiptModel.Company,receiptModel.Production,receiptModel.BLNO,receiptModel.Container,receiptModel.AnimalNo
+            ReceiptModel newRecord = Receipt.Receipt_Insert(receiptModel.Client,receiptModel.Company,receiptModel.Production,receiptModel.BLNO,receiptModel.Container,receiptModel.AnimalNo
                 , receiptModel.Place,receiptModel.IsCommercial,receiptModel.IsAnimal,receiptModel.IsHealth,receiptModel.Remark,receiptModel.DiseaseFee,
-                receiptModel.DisinfectFee,receiptModel.DiseaseChequeNo,receiptModel.DisinfectChequeNo,receiptModel.Mobile,receiptModel.Date);
+                receiptModel.DisinfectFee,receiptModel.DiseaseChequeNo,receiptModel.DisinfectChequeNo,receiptModel.Mobile,receiptModel.YearMonth,receiptModel.Port,receiptModel.Contacter);
+
+            if (newRecord == null)
+            {
+                return false;
+            }
+            else
+            {
+                receiptModel = newRecord;
+                return true;
+            }
         }
 
-        public static bool UpdateReceipt(this ITable<ReceiptModel> Receipt, ReceiptModel receiptModel)
+        public static bool Receipt_Update(this ITable<ReceiptModel> Receipt, ReceiptModel receiptModel)
         {
-            return Receipt.Where(u => u.ID == receiptModel.ID).Set(p => p, receiptModel).Update() > 0 ? true : false;
+            //return Receipt.Where(u => u.ID == receiptModel.ID).Update((u) => receiptModel) > 0 ? true : false;
+            return Receipt.Update(r => r.ID == receiptModel.ID, r => receiptModel) > 0 ? true : false;
+            
         }
 
-        public static bool DeleteReceipt(this ITable<ReceiptModel> Receipt, int ID)
+        public static int Receipt_Update(this DataConnection dataConnection, int? @id, string @Client, string @Company, string @Production,
+            string @BLNO, string @Container, string @AnimalNo, string @Place, bool @IsCommercial, bool @IsAnimal, bool @IsHealth,
+            string @Remark, decimal @DiseaseFee, decimal @DisinfectFee, string @DiseaseChequeNo, string @DisinfectChequeNo,
+            string @Mobile, string @YearMonth, string @Contacter)
+        {
+            return dataConnection.ExecuteProc("[Receipt_Update]",
+                new DataParameter("@id", @id), new DataParameter("@Client", @Client),
+                new DataParameter("@Company", @Company), new DataParameter("@Production", @Production),
+                new DataParameter("@BLNO", @BLNO), new DataParameter("@Container", @Container),
+                new DataParameter("@AnimalNo", @AnimalNo), new DataParameter("@Place", @Place),
+                new DataParameter("@yearMonth", @YearMonth), new DataParameter("@IsCommercial", @IsCommercial),
+                new DataParameter("@IsAnimal", @IsAnimal), new DataParameter("@IsHealth", @IsHealth),
+                new DataParameter("@Remark", @Remark), new DataParameter("@DiseaseFee", @DiseaseFee),
+                new DataParameter("@DisinfectFee", @DisinfectFee), new DataParameter("@DiseaseChequeNo", @DiseaseChequeNo),
+                new DataParameter("@DisinfectChequeNo", @DisinfectChequeNo), new DataParameter("@Mobile", @Mobile),
+                new DataParameter("@Contacter",@Contacter));
+        }
+
+        public static bool Receipt_Update(this DataConnection dataConnection, ReceiptModel receiptModel)
+        {
+            return dataConnection.Receipt_Update(receiptModel.ID, receiptModel.Client, receiptModel.Company, receiptModel.Production, receiptModel.BLNO, receiptModel.Container, receiptModel.AnimalNo
+                , receiptModel.Place, receiptModel.IsCommercial, receiptModel.IsAnimal, receiptModel.IsHealth, receiptModel.Remark, receiptModel.DiseaseFee,
+                receiptModel.DisinfectFee, receiptModel.DiseaseChequeNo, receiptModel.DisinfectChequeNo, receiptModel.Mobile, receiptModel.YearMonth,receiptModel.Contacter) > 0 ? true : false;
+        }
+
+
+        public static bool Receipt_Delete(this ITable<ReceiptModel> Receipt, int ID)
         {
             return Receipt.Where(u => u.ID == ID).Delete() > 0 ? true : false;
         }

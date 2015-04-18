@@ -26,6 +26,7 @@ namespace EE.BM
         Changed,
         Saved,
         NoChange,
+        Failed,
         Invaild
     }
 }

@@ -8,6 +8,7 @@ using EE.BM.DAL;
 
 namespace EE.BM.Model
 {
+    [Table("t_Receipt")]
     public class ReceiptModel:DataModel,IModel
     {
         /// <summary>
@@ -15,6 +16,11 @@ namespace EE.BM.Model
         /// </summary>
         [Column,PrimaryKey,Identity]
         public int ID { get; set; }
+        /// <summary>
+        /// 日期
+        /// </summary>
+        [Column, PrimaryKey]
+        public string YearMonth { get; set; }
         /// <summary>
         /// 客户
         /// </summary>
@@ -95,11 +101,6 @@ namespace EE.BM.Model
         /// </summary>
         [Column, Nullable]
         public string Mobile { get; set; }
-        /// <summary>
-        /// 日期
-        /// </summary>
-        [Column, Nullable]
-        public DateTime Date { get; set; }
         /// <summary>
         /// 港口
         /// </summary>

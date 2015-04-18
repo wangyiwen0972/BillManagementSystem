@@ -69,19 +69,19 @@ namespace EE.BM
                 base.SetProperty<string>(ref status, value.ToString(), () => this.Status);
             }
         }
-        private DateTime date;
+        private string yearMonth;
         /// <summary>
         /// 日期
         /// </summary>
-        public DateTime Date
+        public string YearMonth
         {
-            get { return receipt.Date; }
+            get { return receipt.YearMonth; }
             set 
             {
-                base.SetProperty<DateTime>(ref date, value, () => this.receipt.Date);
-                if (!date.Equals(this.receipt.Date))
+                base.SetProperty<string>(ref yearMonth, value, () => this.receipt.YearMonth);
+                if (!yearMonth.Equals(this.receipt.YearMonth))
                 {
-                    this.receipt.Date = value;
+                    this.receipt.YearMonth = value;
 
                     if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
                 }
@@ -222,7 +222,7 @@ namespace EE.BM
             set 
             {
                 base.SetProperty<string>(ref remark, value, () => this.Remark);
-                if (!string.IsNullOrEmpty(this.receipt.Remark) && !remark.Equals(this.receipt.Remark))
+                if (!string.IsNullOrEmpty(remark) && !remark.Equals(this.receipt.Remark))
                 {
                     this.receipt.Remark = remark;
                     if(GetCurrentStatus()!= ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
@@ -243,6 +243,87 @@ namespace EE.BM
                 base.SetProperty<string>(ref message, value, () => this.OutputMessage);
             }
         }
+
+        private string diseaseFee;
+
+        public string DiseaseFee
+        {
+            get { return diseaseFee; }
+            set
+            {
+                base.SetProperty<string>(ref diseaseFee, value, () => this.DiseaseFee);
+                if (!string.IsNullOrEmpty(diseaseFee) && !diseaseFee.Equals(this.receipt.DiseaseFee))
+                {
+                    decimal fee = 0;
+                    if (decimal.TryParse(value, out fee))
+                    {
+                        this.receipt.DiseaseFee = fee;
+                        if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    }
+                    else
+                    {
+                        this.SetCurrentStats(ViewModelStatus.Invaild);
+                    }
+                }
+            }
+        }
+
+        private string disinfectFee;
+
+        public string DisinfectFee
+        {
+            get { return disinfectFee; }
+            set 
+            { 
+                base.SetProperty<string>(ref disinfectFee, value, () => this.DisinfectFee);
+                if (!string.IsNullOrEmpty(disinfectFee) && !disinfectFee.Equals(this.receipt.DisinfectFee))
+                {
+                    decimal fee = 0;
+                    if (decimal.TryParse(value, out fee))
+                    {
+                        this.receipt.DisinfectFee = fee;
+                        if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    }
+                    else
+                    {
+                        this.SetCurrentStats(ViewModelStatus.Invaild);
+                    }
+                }
+            }
+        }
+
+        private string disinfectChequeNo;
+
+        public string DisinfectChequeNo
+        {
+            get { return disinfectChequeNo; }
+            set 
+            { 
+                base.SetProperty<string>(ref disinfectChequeNo, value, () => this.DisinfectChequeNo);
+                if (!string.IsNullOrEmpty(disinfectChequeNo) && !disinfectChequeNo.Equals(this.receipt.DisinfectChequeNo))
+                {
+                    this.receipt.DisinfectChequeNo = value;
+                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                }
+            }
+        }
+
+        private string diseaseChequeNo;
+
+        public string DiseaseChequeNo
+        {
+            get { return diseaseChequeNo; }
+            set 
+            { 
+                base.SetProperty<string>(ref diseaseChequeNo, value, () => this.DiseaseChequeNo);
+                if (!string.IsNullOrEmpty(diseaseChequeNo) && !diseaseChequeNo.Equals(this.receipt.DiseaseChequeNo))
+                {
+                    this.receipt.DiseaseChequeNo = value;
+                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                }
+            }
+        }
+
 
         #endregion
 
@@ -350,14 +431,14 @@ namespace EE.BM
                         //connect to the db, and get an update
                         if (status == ViewModelStatus.NewRecord)
                         {
-                            if (connection.GetTable<ReceiptModel>().NewReceipt(this.receipt))
+                            if (connection.GetTable<ReceiptModel>().Receipt_Insert(ref this.receipt))
                             {
                                 this.SetCurrentStats(ViewModelStatus.Saved);
                             }
                         }
                         else
                         {
-                            if (connection.GetTable<ReceiptModel>().UpdateReceipt(this.receipt))
+                            if (connection.Receipt_Update(this.receipt))
                             {
                                 this.SetCurrentStats(ViewModelStatus.Saved);
                             }

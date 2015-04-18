@@ -23,7 +23,8 @@ namespace EE.BM.View
         {
             InitializeComponent();
 
-            
+            this.dpYearMonth.IsTodayHighlighted = false;
+            this.dpYearMonth.DisplayDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM"));
 
             //System.Drawing.Bitmap bitmap = Properties.Resources.Folder_generic;
 
