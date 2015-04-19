@@ -62,6 +62,11 @@ namespace EE.BM.Model
         [Column, Nullable]
         public bool IsCommercial { get; set; }
         /// <summary>
+        /// 商检号
+        /// </summary>
+        [Column, Nullable]
+        public string CommercialNo { get; set; }
+        /// <summary>
         /// 是否动检
         /// </summary>
         [Column, Nullable]
@@ -71,6 +76,11 @@ namespace EE.BM.Model
         /// </summary>
         [Column, Nullable]
         public bool IsHealth { get; set; }
+        /// <summary>
+        /// 卫检号
+        /// </summary>
+        [Column, Nullable]
+        public string HealthNo { get; set; }
         /// <summary>
         /// 备注
         /// </summary>

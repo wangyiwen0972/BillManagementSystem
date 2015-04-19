@@ -87,7 +87,7 @@ namespace EE.BM.DAL
         private static ReceiptModel Receipt_Insert(this ITable<ReceiptModel> Receipt, string Client, string Company, string Production,
             string BLNO, string Container, string AnimalNo, string Place, bool IsCommercial, bool IsAnimal, bool IsHealth,
             string Remark, decimal DiseaseFee, decimal DisinfectFee, string DiseaseChequeNo, string DisinfectChequeNo,
-            string Mobile, string Date, string Port, string Contacter)
+            string Mobile, string Date, string Port, string Contacter, string HealthNo, string CommercialNo)
         {
             try
             {
@@ -111,7 +111,9 @@ namespace EE.BM.DAL
                     DiseaseFee = DiseaseFee,
                     DiseaseChequeNo = DiseaseChequeNo,
                     DisinfectFee = DisinfectFee,
-                    DisinfectChequeNo = DisinfectChequeNo
+                    DisinfectChequeNo = DisinfectChequeNo,
+                    HealthNo = HealthNo,
+                    CommercialNo = CommercialNo
                 });
                 ReceiptModel current = Receipt.Single((e) => e.YearMonth == Date);
 
@@ -129,7 +131,8 @@ namespace EE.BM.DAL
         {
             ReceiptModel newRecord = Receipt.Receipt_Insert(receiptModel.Client,receiptModel.Company,receiptModel.Production,receiptModel.BLNO,receiptModel.Container,receiptModel.AnimalNo
                 , receiptModel.Place,receiptModel.IsCommercial,receiptModel.IsAnimal,receiptModel.IsHealth,receiptModel.Remark,receiptModel.DiseaseFee,
-                receiptModel.DisinfectFee,receiptModel.DiseaseChequeNo,receiptModel.DisinfectChequeNo,receiptModel.Mobile,receiptModel.YearMonth,receiptModel.Port,receiptModel.Contacter);
+                receiptModel.DisinfectFee,receiptModel.DiseaseChequeNo,receiptModel.DisinfectChequeNo,receiptModel.Mobile,receiptModel.YearMonth,receiptModel.Port,receiptModel.Contacter,
+                receiptModel.HealthNo,receiptModel.CommercialNo);
 
             if (newRecord == null)
             {
@@ -178,6 +181,105 @@ namespace EE.BM.DAL
         public static bool Receipt_Delete(this ITable<ReceiptModel> Receipt, int ID)
         {
             return Receipt.Where(u => u.ID == ID).Delete() > 0 ? true : false;
+        }
+
+        public static ICollection<object> GetPortList(this ITable<ReceiptModel> Receipt)
+        {
+            List<object> portList = new List<object>();
+
+            var query = Receipt.GroupBy(x => new { x.Port }).Select(g => g.Key);
+
+            foreach (var q in query)
+            {
+                if (string.IsNullOrEmpty(q.Port)) continue;
+                portList.Add(Helper.CreateKeyValueObject(q.Port,q.Port));
+            }
+
+            return portList;
+        }
+
+        public static ICollection<object> GetClientList(this ITable<ReceiptModel> Receipt)
+        {
+            List<object> portList = new List<object>();
+
+            var query = Receipt.GroupBy(x => new { x.Client }).Select(g => g.Key);
+
+            foreach (var q in query)
+            {
+                if (string.IsNullOrEmpty(q.Client)) continue;
+                portList.Add(Helper.CreateKeyValueObject(q.Client, q.Client));
+            }
+
+            return portList;
+        }
+
+        public static ICollection<object> GetCompanyList(this ITable<ReceiptModel> Receipt)
+        {
+            List<object> portList = new List<object>();
+
+            var query = Receipt.GroupBy(x => new { x.Company }).Select(g => g.Key);
+
+            foreach (var q in query)
+            {
+                if (string.IsNullOrEmpty(q.Company)) continue;
+                portList.Add(Helper.CreateKeyValueObject(q.Company, q.Company));
+            }
+
+            return portList;
+        }
+
+        public static ICollection<object> GetProductionList(this ITable<ReceiptModel> Receipt)
+        {
+            List<object> portList = new List<object>();
+
+            var query = Receipt.GroupBy(x => new { x.Production }).Select(g => g.Key);
+
+            foreach (var q in query)
+            {
+                if (string.IsNullOrEmpty(q.Production)) continue;
+                portList.Add(Helper.CreateKeyValueObject(q.Production, q.Production));
+            }
+
+            return portList;
+        }
+
+        public static ICollection<object> GetYearList(this ITable<ReceiptModel> Receipt)
+        {
+            List<object> yearList = new List<object>();
+
+            var query = Receipt.GroupBy(x => new { x.YearMonth }).Select(g => g.Key);
+
+            foreach (var q in query)
+            {
+                if (string.IsNullOrEmpty(q.YearMonth)) continue;
+                if (q.YearMonth.IndexOfAny(new char[] { '/', '-' }) > -1)
+                {
+                    string year = q.YearMonth.Split(new char[] { '/', '-' })[0];
+                    yearList.Add(Helper.CreateKeyValueObject(year,year));
+                }
+            }
+
+            return yearList;
+        }
+
+        public static bool IsDuplicateDate(this ITable<ReceiptModel>Receipt, string date)
+        {
+            var query = Receipt.Where(x => x.YearMonth == date);
+
+            return query.Any();
+        }
+
+        public static ICollection<ReceiptModel> Receipt_FindByYear(this ITable<ReceiptModel> Receipt, string Year)
+        {
+            List<ReceiptModel> receiptList = new List<ReceiptModel>();
+            var query = Receipt.Where(r => r.YearMonth.Contains(Year)).OrderByDescending(x=>x.YearMonth);
+
+            foreach (var q in query)
+            {
+                receiptList.Add(q);
+            }
+
+            return receiptList;
         }
 
         #endregion

@@ -29,6 +29,9 @@ namespace EE.BM
             connection = DataModel.CreateDataConnection();
 
             SetCurrentStats(ViewModelStatus.NewRecord);
+
+            //get vm lists from database
+            InitializePropertyList();
         }
 
         public ReceiptViewModel(UserModel user, ReceiptModel receipt):this(user)
@@ -78,12 +81,25 @@ namespace EE.BM
             get { return receipt.YearMonth; }
             set 
             {
-                base.SetProperty<string>(ref yearMonth, value, () => this.receipt.YearMonth);
-                if (!yearMonth.Equals(this.receipt.YearMonth))
-                {
-                    this.receipt.YearMonth = value;
+                if (string.IsNullOrEmpty(value)) return;
 
-                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                string date = DateTime.Parse(value).ToString("yyyy-MM");
+
+                if (GetCurrentStatus() == ViewModelStatus.NewRecord && !connection.GetTable<ReceiptModel>().IsDuplicateDate(date))
+                {
+                    base.SetProperty<string>(ref yearMonth, date, () => this.receipt.YearMonth);
+
+                    if (!yearMonth.Equals(this.receipt.YearMonth))
+                    {
+                        this.receipt.YearMonth = date;
+
+                        if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    }
+                }
+                else
+                {
+                    OutputMessage += "该日期记录已经存在，请重新选择日期！" + Environment.NewLine;
+                    //this.SetCurrentStats(ViewModelStatus.Invaild);
                 }
             }
         }
@@ -199,7 +215,9 @@ namespace EE.BM
         }
 
         private string mobile;
-
+        /// <summary>
+        /// 联系电话
+        /// </summary>
         public string Mobile
         {
             get { return mobile; }
@@ -215,7 +233,7 @@ namespace EE.BM
         }
 
         private string remark;
-
+        //备注
         public string Remark
         {
             get { return remark; }
@@ -231,7 +249,9 @@ namespace EE.BM
         }
 
         private string message;
-
+        /// <summary>
+        /// 输出信息
+        /// </summary>
         public string OutputMessage
         {
             get
@@ -245,7 +265,9 @@ namespace EE.BM
         }
 
         private string diseaseFee;
-
+        /// <summary>
+        /// 检疫费
+        /// </summary>
         public string DiseaseFee
         {
             get { return diseaseFee; }
@@ -269,7 +291,9 @@ namespace EE.BM
         }
 
         private string disinfectFee;
-
+        /// <summary>
+        /// 消毒费
+        /// </summary>
         public string DisinfectFee
         {
             get { return disinfectFee; }
@@ -293,7 +317,9 @@ namespace EE.BM
         }
 
         private string disinfectChequeNo;
-
+        /// <summary>
+        /// 消毒支票号码
+        /// </summary>
         public string DisinfectChequeNo
         {
             get { return disinfectChequeNo; }
@@ -309,7 +335,9 @@ namespace EE.BM
         }
 
         private string diseaseChequeNo;
-
+        /// <summary>
+        /// 检疫支票号码
+        /// </summary>
         public string DiseaseChequeNo
         {
             get { return diseaseChequeNo; }
@@ -324,11 +352,104 @@ namespace EE.BM
             }
         }
 
+        private bool isAnimal;
+
+        public bool IsAnimal
+        {
+            get { return isAnimal; }
+            set 
+            { 
+                base.SetProperty<bool>(ref isAnimal, value, () => this.IsAnimal);
+                if (this.receipt.IsAnimal != value) this.receipt.IsAnimal = value;
+            }
+        }
+
+        private bool isCommercial;
+
+        public bool IsCommercial
+        {
+            get { return isCommercial; }
+            set 
+            { 
+                base.SetProperty<bool>(ref isCommercial, value, () => this.IsCommercial);
+                if (this.receipt.IsCommercial != value) this.receipt.IsCommercial = value;
+            }
+        }
+
+        private bool isHealth;
+
+        public bool IsHealth
+        {
+            get { return isHealth; }
+            set 
+            { 
+                base.SetProperty<bool>(ref isHealth, value, () => this.IsHealth);
+                if (this.receipt.IsHealth != value) this.receipt.IsHealth = value;
+            }
+        }
+
+        private string animalNo;
+
+        public string AnimalNo
+        {
+            get { return animalNo; }
+            set 
+            { 
+                base.SetProperty<string>(ref animalNo, value, () => this.AnimalNo);
+                if (!string.IsNullOrEmpty(animalNo) && !animalNo.Equals(this.receipt.AnimalNo))
+                {
+                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    this.receipt.AnimalNo = value;
+                }
+            }
+        }
+
+        private string commercialNo;
+
+        public string CommercialNo
+        {
+            get { return commercialNo; }
+            set 
+            { 
+                base.SetProperty<string>(ref commercialNo, value, () => this.CommercialNo);
+                if (!string.IsNullOrEmpty(commercialNo) && !commercialNo.Equals(this.receipt.CommercialNo))
+                {
+                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    this.receipt.CommercialNo = value;
+                }
+            }
+        }
+
+        private string healthNo;
+
+        public string HealthNo
+        {
+            get { return healthNo; }
+            set 
+            { 
+                base.SetProperty<string>(ref healthNo, value, () => this.HealthNo);
+                if (!string.IsNullOrEmpty(healthNo) && !healthNo.Equals(this.receipt.HealthNo))
+                {
+                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    this.receipt.HealthNo = value;
+                }
+            }
+        }
+
+        private string year;
+        public string Year
+        {
+            get { return year; }
+            set
+            {
+                base.SetProperty<string>(ref year, value, () => this.Year);
+            }
+        }
 
         #endregion
 
         #region View Model List Properties
-        private ObservableCollection<object> companyList = null;
+        private ObservableCollection<object> companyList = new ObservableCollection<object>();
         public ObservableCollection<object> CompanyList
         {
             get { return companyList; }
@@ -338,7 +459,7 @@ namespace EE.BM
             }
         }
 
-        private ObservableCollection<object> portList = null;
+        private ObservableCollection<object> portList = new ObservableCollection<object>();
         public ObservableCollection<object> PortList
         {
             get { return portList; }
@@ -348,7 +469,7 @@ namespace EE.BM
             }
         }
 
-        private ObservableCollection<object> productList = null;
+        private ObservableCollection<object> productList = new ObservableCollection<object>();
         public ObservableCollection<object> ProductLsit
         {
             get { return productList; }
@@ -357,6 +478,36 @@ namespace EE.BM
                 base.SetProperty(ref productList, value, () => ProductLsit);
             }
         }
+
+        private ObservableCollection<object> clientList = new ObservableCollection<object>();
+        public ObservableCollection<object> ClientList
+        {
+            get { return clientList; }
+            set
+            {
+                base.SetProperty(ref clientList, value, () => ClientList);
+            }
+        }
+
+        private ObservableCollection<ReceiptModel> receiptList = new ObservableCollection<ReceiptModel>();
+        public ObservableCollection<ReceiptModel> ReceiptList
+        {
+            get { return receiptList; }
+            set
+            {
+                base.SetProperty(ref receiptList, value, () => ReceiptList);
+            }
+             
+        }
+
+        private ObservableCollection<object> yearList = new ObservableCollection<object>();
+
+        public ObservableCollection<object> YearList
+        {
+            get { return yearList; }
+            set { base.SetProperty<ObservableCollection<object>>(ref yearList, value, () => this.YearList); }
+        }
+
 
         #endregion
 
@@ -414,9 +565,24 @@ namespace EE.BM
             }
         }
 
+        public DelegateCommand SearchReceiptCommand
+        {
+            get
+            {
+                return new DelegateCommand()
+                {
+                    ExecuteCommand = new Action<object>(filterReceiptByYear)
+                };
+            }
+        }
+
         #endregion
 
         #region private methods
+        /// <summary>
+        /// 保存数据到数据库
+        /// </summary>
+        /// <param name="parameter"></param>
         private void save(object parameter)
         {
             ViewModelStatus status = this.GetCurrentStatus();
@@ -451,9 +617,54 @@ namespace EE.BM
                 }
             }
         }
-
-        public void delete(object parameter)
+        /// <summary>
+        /// 从数据库中删除数据
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void delete(object parameter)
         {
+        }
+
+        private void InitializePropertyList()
+        {
+            LinqToDB.ITable<ReceiptModel> iTable = connection.GetTable<ReceiptModel>();
+
+            foreach (object port in iTable.GetPortList())
+            {
+                this.portList.Add(port);
+            }
+            foreach (object company in iTable.GetCompanyList())
+            {
+                this.companyList.Add(company);
+            }
+            foreach (object client in iTable.GetClientList())
+            {
+                this.clientList.Add(client);
+            }
+            foreach (object production in iTable.GetProductionList())
+            {
+                this.clientList.Add(production);
+            }
+        }
+
+        private void filterReceiptByYear(object parameter)
+        {
+            if (parameter == null)
+            {
+
+                    foreach (var year in connection.GetTable<ReceiptModel>().GetYearList())
+                    {
+                        this.yearList.Add(year);
+                    }
+                
+            }
+            else
+            {
+                foreach (var receipt in connection.GetTable<ReceiptModel>().Receipt_FindByYear(parameter.ToString()))
+                {
+                    this.receiptList.Add(receipt);
+                }
+            }
         }
 
         #endregion

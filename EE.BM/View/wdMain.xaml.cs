@@ -26,6 +26,7 @@ namespace EE.BM.View
             this.dpYearMonth.IsTodayHighlighted = false;
             this.dpYearMonth.DisplayDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM"));
 
+
             //System.Drawing.Bitmap bitmap = Properties.Resources.Folder_generic;
 
             //System.IO.MemoryStream stream = new System.IO.MemoryStream();
@@ -44,22 +45,39 @@ namespace EE.BM.View
 
         private void ToolBar_Loaded(object sender, RoutedEventArgs e)
         {
-            ToolBar toolBar = sender as ToolBar;
-            var overflowGrid = toolBar.Template.FindName("OverflowGrid", toolBar) as FrameworkElement;
-            if (overflowGrid != null)
-            {
-                overflowGrid.Visibility = Visibility.Collapsed;
-            }
-            var mainPanelBorder = toolBar.Template.FindName("MainPanelBorder", toolBar) as FrameworkElement;
-            if (mainPanelBorder != null)
-            {
-                mainPanelBorder.Margin = new Thickness(0);
-            }
+            //ToolBar toolBar = sender as ToolBar;
+            //var overflowGrid = toolBar.Template.FindName("OverflowGrid", toolBar) as FrameworkElement;
+            //if (overflowGrid != null)
+            //{
+            //    overflowGrid.Visibility = Visibility.Collapsed;
+            //}
+            //var mainPanelBorder = toolBar.Template.FindName("MainPanelBorder", toolBar) as FrameworkElement;
+            //if (mainPanelBorder != null)
+            //{
+            //    mainPanelBorder.Margin = new Thickness(0);
+            //}
         }
 
         private void ComboBox_FocusableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            
+            (this.DataContext as ReceiptViewModel).SearchReceiptCommand.Execute((sender as ComboBox).SelectedValue.ToString());
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            //ReceiptViewModel context = this.DataContext as ReceiptViewModel;
+            (sender as Button).CaptureMouse();
+            //context.SaveCommand.Execute(null);
+        }
+
+        private void TabItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as ReceiptViewModel).SearchReceiptCommand.Execute(null);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (this.DataContext as ReceiptViewModel).SearchReceiptCommand.Execute((sender as ComboBox).SelectedValue.ToString());
         }
     }
 }

@@ -571,6 +571,7 @@
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="FlowDirection" Value="LeftToRight" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent"/>
         <!--修改模板属性-->
         <Setter Property="Template">
             <Setter.Value>

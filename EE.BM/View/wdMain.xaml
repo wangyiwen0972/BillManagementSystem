@@ -32,71 +32,69 @@
                 <MenuItem Header="_帮助">
                 </MenuItem>
             </Menu>
-            <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
-                <ToolBar Band="1" BandIndex="1" Loaded="ToolBar_Loaded">
-                    <Button Name="btnNew">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/Document.png"/>
-                            <TextBlock Text="新建" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnOpen">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/Generic Folder smooth.png"/>
-                            <TextBlock Text="打开" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnSave" Command="{Binding SaveCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/Save.png" Height="32"/>
-                            <TextBlock Text="保存" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnCopy">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/Copy_Document.png"/>
-                            <TextBlock Text="复制" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnDelete">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/Page remove.png"/>
-                            <TextBlock Text="删除" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnPreview">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/Page preview.png" Height="32"/>
-                            <TextBlock Text="打印预览" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnPrient">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/Folder Printer.png" Height="32"/>
-                            <TextBlock Text="打印" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnExport">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/excel.png" Height="32"/>
-                            <TextBlock Text="生成Excel" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnExportToIdecl">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/idecl.png" Height="32"/>
-                            <TextBlock Text="导出到九城单证" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="btnClose">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/BMStudio;component/resources/close.png" Height="32"/>
-                            <TextBlock Text="关闭" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </ToolBar>
-            </ToolBarTray>
-            <TabControl DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" Height="32" Margin="5" Width="{Binding ElementName=w,Path=Width}"  DockPanel.Dock="Top" Background="Transparent">
+                <Button Name="btnNew" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/Document.png" Height="32"/>
+                        <TextBlock Text="新建" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnOpen" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/Generic Folder smooth.png"/>
+                        <TextBlock Text="打开" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnSave" Margin="5,0,0,0" Command="{Binding SaveCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/Save.png" Height="32"/>
+                        <TextBlock Text="保存" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnCopy" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/Copy_Document.png"/>
+                        <TextBlock Text="复制" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnDelete">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/Page remove.png"/>
+                        <TextBlock Text="删除" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnPreview" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/Page preview.png" Height="32"/>
+                        <TextBlock Text="打印预览" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnPrient" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/Folder Printer.png" Height="32"/>
+                        <TextBlock Text="打印" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnExport" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/excel.png" Height="32"/>
+                        <TextBlock Text="生成Excel" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnExportToIdecl" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/idecl.png" Height="32"/>
+                        <TextBlock Text="导出到九城单证" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnClose" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/BMStudio;component/resources/close.png" Height="32"/>
+                        <TextBlock Text="关闭" VerticalAlignment="Center" Foreground="Black"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <TabControl DockPanel.Dock="Top" Margin="0,5,0,0">
                 <TabItem Header="数据录入" >
                     <StackPanel DockPanel.Dock="Top">
                         <Border x:Name="borderBg" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
@@ -198,6 +196,7 @@
                                             </Style>
                                         </TextBox.Resources>
                                     </TextBox>
+                                    <Button Grid.Row="1" Grid.Column="3" Margin="10,10,0,0" Width="20">...</Button>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -210,10 +209,24 @@
                                         <Setter Property="FontSize" Value="13"/>
                                         <Setter Property="FontWeight" Value="Light"/>
                                     </Style>
-                                    <Style TargetType="{x:Type TextBox}" x:Key="enable">
+                                    <Style TargetType="TextBox" x:Key="stlAnimalEnable">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=cbAnimal,Path=IsChecked}" Value="True">
-                                                <Setter Property="IsEnabled" Value="True"></Setter>
+                                            <DataTrigger Binding="{Binding ElementName=cbAnimal,Path=IsChecked}" Value="False">
+                                                <Setter Property="IsEnabled" Value="False"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                    <Style TargetType="TextBox" x:Key="stlCommercialEnable">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbCommercial,Path=IsChecked}" Value="False">
+                                                <Setter Property="IsEnabled" Value="False"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                    <Style TargetType="TextBox" x:Key="stlHealthEnable">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbHealth,Path=IsChecked}" Value="False">
+                                                <Setter Property="IsEnabled" Value="False"></Setter>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -232,23 +245,17 @@
                                     <ColumnDefinition Width="151"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="动检:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <CheckBox Name="cbAnimal" Content="是否动检" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
-                                    <CheckBox.Resources>
-                                        
-                                    </CheckBox.Resources>
-                                </CheckBox>
+                                <CheckBox Name="cbAnimal" Content="是否动检" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding IsAnimal,Mode=TwoWay}"/>
                                 <Label Content="动检号:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <TextBox Style="{StaticResource enable}"  Name="txtAnimal" Width="150" Grid.Row="0" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left">
-                                    
-                                </TextBox>
+                                <TextBox Style="{StaticResource stlAnimalEnable}" Name="txtAnimal" Width="150" Grid.Row="0" Grid.Column="3" Height="25" Grid.ColumnSpan="3" HorizontalAlignment="Left" Text="{Binding AnimalNo,Mode=TwoWay}"/>
                                 <Label Content="商检:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <CheckBox Content="是否商检" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+                                <CheckBox Name="cbCommercial" Content="是否商检" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding IsCommercial,Mode=TwoWay}"/>
                                 <Label Content="商检号:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left"/>
+                                <TextBox Name="txtCommercial" Style="{StaticResource stlCommercialEnable}" Width="150" Grid.Row="1" Grid.Column="3" Height="25" Grid.ColumnSpan="3" HorizontalAlignment="Left" Text="{Binding CommercialNo,Mode=TwoWay}"/>
                                 <Label Content="卫检:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <CheckBox Content="是否卫检" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
+                                <CheckBox Name="cbHealth" Content="是否卫检" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding IsHealth}"/>
                                 <Label Content="卫检号:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <TextBox Width="150" Grid.Row="2" Grid.Column="3" Height="25" IsEnabled="False" Grid.ColumnSpan="3" HorizontalAlignment="Left"/>
+                                <TextBox Name="txtHealth" Style="{StaticResource stlHealthEnable}" Width="150" Grid.Row="2" Grid.Column="3" Height="25" Grid.ColumnSpan="3" HorizontalAlignment="Left" Text="{Binding HealthNo,Mode=TwoWay}"/>
                             </Grid>
                         </Border>
                         <Border x:Name="borderBg3" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
@@ -280,7 +287,8 @@
                                 <Label Content="消毒费:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
                                 <TextBox Width="150" Grid.Row="1" Grid.Column="1" Height="25" Text="{Binding DisinfectFee,Mode=TwoWay}"/>
                                 <Label Content="消毒支票:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25" Text="{Binding DisinfectChequeNo,Mode=TwoWay}"/>
+                                <TextBox Width="150" Grid.Row="1" Grid.Column="3" Height="25" Text="{Binding DisinfectChequeNo}"/>
+                                
                             </Grid>
                         </Border>
                     </StackPanel>
@@ -288,6 +296,41 @@
                 </TabItem>
                 <TabItem Header="数据查询">
                     
+                </TabItem>
+                <TabItem Header="生成Excel" GotFocus="TabItem_GotFocus" Name="execlTab">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" Width="{Binding ElementName=w,Path=Width}" DockPanel.Dock="Top">
+                            <TextBlock Margin="5,5,0,0" FontSize="12">请选择年份:</TextBlock>
+                            <ComboBox Margin="10,0,0,0" Width="80" SelectionChanged="ComboBox_SelectionChanged" ItemsSource="{Binding YearList,Mode=TwoWay}" SelectedItem="{Binding Year, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember"> 
+                            </ComboBox>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding ReceiptList}" DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" >
+                            
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="月份" Binding="{Binding YearMonth}" Width="50"/>
+                                <DataGridTextColumn Header="客户" Binding="{Binding Client}" Width="100"/>
+                                <DataGridTextColumn Header="经营单位" Binding="{Binding Company}" Width="100"/>
+                                <DataGridTextColumn Header="品名" Binding="{Binding Production}" Width="100"/>
+                                <DataGridTextColumn Header="提单号" Binding="{Binding BLNO}" Width="80"/>
+                                <DataGridTextColumn Header="箱量" Binding="{Binding Container}" Width="80"/>
+                                <DataGridTextColumn Header="场地" Binding="{Binding Place}" Width="80"/>
+                                <DataGridTextColumn Header="是否商检" Binding="{Binding IsCommercial}" Width="80"/>
+                                <DataGridTextColumn Header="商检号" Binding="{Binding CommercialNo}" Width="80"/>
+                                <DataGridTextColumn Header="是否动检" Binding="{Binding IsAnimal}" Width="80"/>
+                                <DataGridTextColumn Header="动检号" Binding="{Binding AnimalNo}" Width="80"/>
+                                <DataGridTextColumn Header="是否卫检" Binding="{Binding IsHealth}" Width="80"/>
+                                <DataGridTextColumn Header="卫检号" Binding="{Binding HealthNo}" Width="80"/>
+                                <DataGridTextColumn Header="检疫费" Binding="{Binding DiseaseFee}" Width="80"/>
+                                <DataGridTextColumn Header="检疫支票号码" Binding="{Binding DiseaseChequeNo}" Width="80"/>
+                                <DataGridTextColumn Header="消毒费" Binding="{Binding DisinfectFee}" Width="80"/>
+                                <DataGridTextColumn Header="消毒支票号码" Binding="{Binding DisinfectChequeNo}" Width="80"/>
+                                <DataGridTextColumn Header="联系电话" Binding="{Binding Mobile}" Width="80"/>
+                                <DataGridTextColumn Header="港口" Binding="{Binding Port}" Width="80"/>
+                                <DataGridTextColumn Header="联系人" Binding="{Binding Contacter}" Width="80"/>
+                                <DataGridTextColumn Header="备注" Binding="{Binding Remark}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
                 </TabItem>
             </TabControl>
         </DockPanel>
