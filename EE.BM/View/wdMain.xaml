@@ -33,7 +33,7 @@
                 </MenuItem>
             </Menu>
             <StackPanel Orientation="Horizontal" Height="32" Margin="5" Width="{Binding ElementName=w,Path=Width}"  DockPanel.Dock="Top" Background="Transparent">
-                <Button Name="btnNew" Margin="5,0,0,0">
+                <Button Name="btnNew" Margin="5,0,0,0" Command="{Binding NewCommand}" CommandParameter="{x:Null}" Click="btnNew_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/BMStudio;component/resources/Document.png" Height="32"/>
                         <TextBlock Text="新建" VerticalAlignment="Center" Foreground="Black"/>
@@ -73,12 +73,6 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/BMStudio;component/resources/Folder Printer.png" Height="32"/>
                         <TextBlock Text="打印" VerticalAlignment="Center" Foreground="Black"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="btnExport" Margin="5,0,0,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/BMStudio;component/resources/excel.png" Height="32"/>
-                        <TextBlock Text="生成Excel" VerticalAlignment="Center" Foreground="Black"/>
                     </StackPanel>
                 </Button>
                 <Button Name="btnExportToIdecl" Margin="5,0,0,0">
@@ -153,23 +147,25 @@
                                 <Label Content="日期:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
                                 <DatePicker Name="dpYearMonth" Grid.Row="0" Grid.Column="1" Width="150" Height="25" Text="{Binding YearMonth,Mode=TwoWay}" />
                                 <Label Content="客户:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <ComboBox Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEditable="True" ItemsSource="{Binding ClientList,Mode=TwoWay}" SelectedItem="{Binding Client, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" FocusableChanged="ComboBox_FocusableChanged" Text="{Binding Client,Mode=TwoWay}"/>
-                                <Label Content="港口:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <ComboBox Grid.Row="1" Grid.Column="3" Width="150" Height="25" IsEditable="True" ItemsSource="{Binding PortList,Mode=TwoWay}" SelectedItem="{Binding Port, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" FocusableChanged="ComboBox_FocusableChanged" Text="{Binding Port,Mode=TwoWay}"/>
+                                <ComboBox Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEditable="True" ItemsSource="{Binding ClientList,Mode=TwoWay}" SelectedItem="{Binding Client, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" Text="{Binding Client,Mode=TwoWay}"/>
                                 <Label Content="经营单位:" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEditable="True" HorizontalAlignment="Left" ItemsSource="{Binding CompanyList, Mode=TwoWay}" Text="{Binding Company,Mode=TwoWay}" SelectedValue="{Binding Company,Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" />
+                                <ComboBox Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEditable="True" HorizontalAlignment="Left" ItemsSource="{Binding CompanyList, Mode=TwoWay}" Text="{Binding Company,Mode=TwoWay}" SelectedItem="{Binding Company,Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" />
                                 <Label Content="品名:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
                                 <ComboBox Width="150" Grid.Row="1" Grid.Column="1" Height="25" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" ItemsSource="{Binding ProductLsit}" Text="{Binding Production,Mode=TwoWay}" SelectedItem="{Binding Production, Mode=TwoWay}" IsEditable="True"/>
-                                <Label Content="箱量:" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <TextBox Width="150" Grid.Row="2" Grid.Column="5" Height="25" Text="{Binding Container, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                <Label Content="港口:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <ComboBox Grid.Row="1" Grid.Column="3" Width="150" Height="25" IsEditable="True" ItemsSource="{Binding PortList,Mode=TwoWay}" SelectedItem="{Binding Port, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember" FocusableChanged="ComboBox_FocusableChanged" Text="{Binding Port,Mode=TwoWay}"/>
                                 <Label Content="提单号:" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
                                 <TextBox Width="150" Grid.Row="1" Grid.Column="5" Height="25" HorizontalAlignment="Left" Text="{Binding BLNO,Mode=TwoWay}"/>
                                 <Label Content="联系人:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left" />
                                 <TextBox Width="150" Grid.Row="2" Grid.Column="1" Height="25" Text="{Binding Contacter,Mode=TwoWay}"/>
                                 <Label Content="联系电话:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
                                 <TextBox Width="150" Grid.Row="2" Grid.Column="3" Height="25" Text="{Binding Mobile,Mode=TwoWay}"/>
-                                <Label Content="备注:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
-                                <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="5">
+                                <Label Content="箱量:" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <TextBox Width="150" Grid.Row="2" Grid.Column="5" Height="25" Text="{Binding Container, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                <Label Content="场地:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <TextBox Width="150" Grid.Row="3" Grid.Column="1" Height="25" Text="{Binding Place, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                <Label Content="备注:" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalContentAlignment="Left"/>
+                                <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3">
                                     <TextBox Grid.Row="2" Name="txtRemark" Grid.Column="5" Height="25" Width="450" Text="{Binding Remark,Mode=TwoWay}" AcceptsReturn="True" TextWrapping="WrapWithOverflow"  >
                                         <TextBox.Resources>
                                             <Style TargetType="TextBox" >
@@ -196,7 +192,6 @@
                                             </Style>
                                         </TextBox.Resources>
                                     </TextBox>
-                                    <Button Grid.Row="1" Grid.Column="3" Margin="10,10,0,0" Width="20">...</Button>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -292,22 +287,28 @@
                             </Grid>
                         </Border>
                     </StackPanel>
-                    
                 </TabItem>
-                <TabItem Header="数据查询">
-                    
-                </TabItem>
-                <TabItem Header="生成Excel" GotFocus="TabItem_GotFocus" Name="execlTab">
+                <TabItem Header="数据查询" GotFocus="TabItem_GotFocus" Name="execlTab">
                     <DockPanel>
                         <StackPanel Orientation="Horizontal" Width="{Binding ElementName=w,Path=Width}" DockPanel.Dock="Top">
-                            <TextBlock Margin="5,5,0,0" FontSize="12">请选择年份:</TextBlock>
+                            <TextBlock Margin="5,5,0,0" FontSize="12" VerticalAlignment="Center">请选择年份:</TextBlock>
                             <ComboBox Margin="10,0,0,0" Width="80" SelectionChanged="ComboBox_SelectionChanged" ItemsSource="{Binding YearList,Mode=TwoWay}" SelectedItem="{Binding Year, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember"> 
                             </ComboBox>
+                            <Button Name="btnExport" Margin="5,0,0,0" Click="btnExport_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/BMStudio;component/resources/excel.png" Height="16"/>
+                                    <TextBlock Text="生成Excel" VerticalAlignment="Center" Foreground="Black"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                         <DataGrid ItemsSource="{Binding ReceiptList}" DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" >
-                            
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="月份" Binding="{Binding YearMonth}" Width="50"/>
+                                <DataGridTextColumn Header="月份" Binding="{Binding YearMonth}" Width="80"/>
                                 <DataGridTextColumn Header="客户" Binding="{Binding Client}" Width="100"/>
                                 <DataGridTextColumn Header="经营单位" Binding="{Binding Company}" Width="100"/>
                                 <DataGridTextColumn Header="品名" Binding="{Binding Production}" Width="100"/>
@@ -332,6 +333,33 @@
                         </DataGrid>
                     </DockPanel>
                 </TabItem>
+                <TabItem Header="高级查询">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <TextBlock VerticalAlignment="Center">查询栏：</TextBlock>
+                            <ComboBox Width="100" Height="25"/>
+                            <TextBlock VerticalAlignment="Center">操作符：</TextBlock>
+                            <ComboBox Width="100" Height="25">
+                                <ComboBoxItem></ComboBoxItem>
+                            </ComboBox>
+                            <TextBlock VerticalAlignment="Center">关键字：</TextBlock>
+                            <TextBox Width="200"/>
+                            <Button/>
+                        </StackPanel>
+                        <ListBox Width="500" DockPanel.Dock="Top" Height="64" Margin="10" HorizontalAlignment="Left"></ListBox>
+                        <DataGrid DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" Width="996" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="月份" Binding="{Binding YearMonth}" Width="80"/>
+                                <DataGridTextColumn Header="客户" Binding="{Binding Client}" Width="100"/>
+                                <DataGridTextColumn Header="经营单位" Binding="{Binding Company}" Width="100"/>
+                                <DataGridTextColumn Header="品名" Binding="{Binding Production}" Width="100"/>
+                                <DataGridTextColumn Header="提单号" Binding="{Binding BLNO}" Width="80"/>
+                                <DataGridTextColumn Header="箱量" Binding="{Binding Container}" Width="80"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+                         
             </TabControl>
         </DockPanel>
     </Grid>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using EE.BM.DAL;
+using Microsoft.Win32;
 namespace EE.BM.View
 {
     /// <summary>
@@ -77,7 +78,42 @@ namespace EE.BM.View
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            (this.DataContext as ReceiptViewModel).SearchReceiptCommand.Execute((sender as ComboBox).SelectedValue.ToString());
+            if ((sender as ComboBox).SelectedValue != null)
+            {
+                try
+                {
+                    (this.DataContext as ReceiptViewModel).SearchReceiptCommand.Execute((sender as ComboBox).SelectedValue.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog()
+            {
+                Filter = "Excel文件(*.xls)|*.xls"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    (this.DataContext as ReceiptViewModel).ExportToExcelCommand.Execute(dialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnNew_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("当前数据被清空");
         }
     }
 }

@@ -49,7 +49,6 @@ namespace  EE.BM
         public virtual void Execute(object parameter)
         {
             if (this.ExecuteCommand != null) this.ExecuteCommand(parameter);
-
         }
     }
 }

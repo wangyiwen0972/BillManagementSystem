@@ -21,27 +21,30 @@ namespace EE.BM.Export
         public ExcelExport(string file)
         {
             string extension = Path.GetExtension(file).Trim('.');
-            if (extension != "xls" || extension != "xlsx")
+            if (extension == "xls" || extension == "xlsx")
             {
-                throw new Exception("The input file is invaild");
+                this.excel = file;
+
+                excelApplication = new Excel.ApplicationClass()
+                {
+                    Visible = false,
+                    DisplayAlerts = false,
+                    AlertBeforeOverwriting = false
+                };
+
+                workBook = excelApplication.Workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
             }
-
-            this.excel = file;
-
-            excelApplication = new Excel.ApplicationClass()
+            else
             {
-                Visible = false,
-                DisplayAlerts = false,
-                AlertBeforeOverwriting = false
-            };
-
-            workBook = excelApplication.ActiveWorkbook;
+                throw new Exception("Input file is invail");
+            }
+            
             
         }
 
-        public Excel.WorksheetClass CreateSheet(string sheetName)
+        public Excel._Worksheet CreateSheet(int sheetIndex, string sheetName)
         {
-            Excel.WorksheetClass newSheet = this.workBook.Sheets.Add(this.missing, this.missing, this.missing, this.missing) as Excel.WorksheetClass;
+            var newSheet = this.workBook.Sheets.Add(this.missing, this.missing, this.missing, Excel.XlSheetType.xlWorksheet) as Excel._Worksheet;
 
             newSheet.Name = sheetName;
 
@@ -135,7 +138,7 @@ namespace EE.BM.Export
         /// <param name="rowIndex">行索引</param>
         /// <param name="columnIndex">列索引</param>
         /// <param name="text">要写入的文本值</param>
-        public void SetCells(int rowIndex, int columnIndex, string text, Excel.WorksheetClass workSheet)
+        public void SetCells(int rowIndex, int columnIndex, string text, Excel._Worksheet workSheet)
         {
             try
             {
@@ -154,7 +157,7 @@ namespace EE.BM.Export
         /// <param name="rowIndex">行索引</param>
         /// <param name="columnIndex">列索引</param>
         /// <param name="text">要写入的文本值</param>
-        public void SetCells(int rowIndex, int columnIndex, string text, string comment, Excel.WorksheetClass workSheet)
+        public void SetCells(int rowIndex, int columnIndex, string text, string comment, Excel._Worksheet workSheet)
         {
             try
             {
@@ -174,7 +177,7 @@ namespace EE.BM.Export
         /// <param name="rowIndex">行索引</param>
         /// <param name="columnIndex">列索引</param>
         /// <param name="text">要写入的文本值</param>
-        public void SetCellComment(int rowIndex, int columnIndex, string comment, Excel.WorksheetClass workSheet)
+        public void SetCellComment(int rowIndex, int columnIndex, string comment, Excel._Worksheet workSheet)
         {
             try
             {
@@ -203,6 +206,25 @@ namespace EE.BM.Export
         }
 
         #region 保存文件
+
+        public void SaveAsFile()
+        {
+            if (this.excel == null)
+                throw new Exception("没有指定输出文件路径！");
+
+            try
+            {
+                this.workBook.SaveAs(excel, missing, missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlExclusive, missing, missing, missing, missing, missing);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                this.Quit();
+            }
+        }
 
         /// <summary>
         /// 另存文件

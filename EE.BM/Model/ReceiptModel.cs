@@ -121,8 +121,30 @@ namespace EE.BM.Model
         /// </summary>
         [Column, Nullable]
         public string Contacter { get; set; }
+        /// <summary>
+        /// 输入时间
+        /// </summary>
+        [Column,NotNull]
+        public DateTime InputTime { get; set; }
+        /// <summary>
+        /// 输入用户
+        /// </summary>
+        [Column,NotNull]
+        public int InputerID { get; set; }
 
+        private UserModel inputer;
 
+        public UserModel Inputer
+        {
+            get
+            {
+                if (inputer == null)
+                {
+                    return CreateDataConnection().GetTable<UserModel>().Find(this.InputerID);
+                }
+                return inputer;
+            }
+        }
 
         public bool IsVaild()
         {

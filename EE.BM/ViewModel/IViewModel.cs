@@ -18,6 +18,7 @@ namespace EE.BM
         ViewModelStatus GetCurrentStatus();
         void SetCurrentStats(ViewModelStatus status);
         UserModel GetCurrentLoginUser();
+        void ShowMessage(string message);
     }
 
     public enum ViewModelStatus

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using EE.BM.DAL;
 using EE.BM.Model;
 using EE.BM.Utility;
+using EE.BM.Export;
+using System.IO;
 
 namespace EE.BM
 {
@@ -25,7 +27,11 @@ namespace EE.BM
         public ReceiptViewModel(UserModel user)
         {
             loginUser = user;
-            receipt = new ReceiptModel();
+            receipt = new ReceiptModel()
+            {
+                InputerID = loginUser.ID,
+                InputTime = DateTime.Now
+            };
             connection = DataModel.CreateDataConnection();
 
             SetCurrentStats(ViewModelStatus.NewRecord);
@@ -55,6 +61,10 @@ namespace EE.BM
         public string InputDate
         {
             get { return inputDate; }
+            set 
+            {
+                base.SetProperty<string>(ref inputDate, value, () => this.InputDate);
+            }
         }
         /// <summary>
         /// 单证状态
@@ -83,10 +93,10 @@ namespace EE.BM
             {
                 if (string.IsNullOrEmpty(value)) return;
 
-                string date = DateTime.Parse(value).ToString("yyyy-MM");
+                string date = DateTime.Parse(value).ToString("yyyy-MM-dd");
 
-                if (GetCurrentStatus() == ViewModelStatus.NewRecord && !connection.GetTable<ReceiptModel>().IsDuplicateDate(date))
-                {
+                //if (GetCurrentStatus() == ViewModelStatus.NewRecord && !connection.GetTable<ReceiptModel>().IsDuplicateDate(date))
+                //{
                     base.SetProperty<string>(ref yearMonth, date, () => this.receipt.YearMonth);
 
                     if (!yearMonth.Equals(this.receipt.YearMonth))
@@ -95,12 +105,12 @@ namespace EE.BM
 
                         if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
                     }
-                }
-                else
-                {
-                    OutputMessage += "该日期记录已经存在，请重新选择日期！" + Environment.NewLine;
-                    //this.SetCurrentStats(ViewModelStatus.Invaild);
-                }
+                //}
+                //else
+                //{
+                //    OutputMessage += "该日期记录已经存在，请重新选择日期！" + Environment.NewLine;
+                //    //this.SetCurrentStats(ViewModelStatus.Invaild);
+                //}
             }
         }
         private string port;
@@ -446,6 +456,40 @@ namespace EE.BM
             }
         }
 
+        private string place;
+
+        public string Place
+        {
+            get { return place; }
+            set 
+            { 
+                base.SetProperty<string>(ref place, value, () => this.Place);
+                if (!string.IsNullOrEmpty(place) && !place.Equals(this.receipt.Place))
+                {
+                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    this.receipt.Place = value;
+                }
+            }
+        }
+
+        private string client;
+
+        public string Client
+        {
+            get { return client; }
+            set 
+            { 
+                base.SetProperty<string>(ref client, value, () => this.Client);
+                if (!string.IsNullOrEmpty(client) && !client.Equals(this.receipt.Client))
+                {
+                    if (GetCurrentStatus() != ViewModelStatus.NewRecord) this.SetCurrentStats(ViewModelStatus.Changed);
+                    this.receipt.Client = value;
+                }
+            }
+        }
+
+
+
         #endregion
 
         #region View Model List Properties
@@ -521,7 +565,7 @@ namespace EE.BM
             {
                 return new DelegateCommand()
                 {
-
+                    ExecuteCommand = new Action<object>(newReceipt)
                 };
             }
         }
@@ -560,7 +604,7 @@ namespace EE.BM
             {
                 return new DelegateCommand()
                 {
-
+                    ExecuteCommand = new Action<object>(exportToExcel)
                 };
             }
         }
@@ -643,7 +687,7 @@ namespace EE.BM
             }
             foreach (object production in iTable.GetProductionList())
             {
-                this.clientList.Add(production);
+                this.productList.Add(production);
             }
         }
 
@@ -651,15 +695,17 @@ namespace EE.BM
         {
             if (parameter == null)
             {
+                this.yearList.Clear();
 
-                    foreach (var year in connection.GetTable<ReceiptModel>().GetYearList())
-                    {
-                        this.yearList.Add(year);
-                    }
-                
+                foreach (var year in connection.GetTable<ReceiptModel>().GetYearList())
+                {
+                    this.yearList.Add(year);
+                }
+
             }
             else
             {
+                this.receiptList.Clear();
                 foreach (var receipt in connection.GetTable<ReceiptModel>().Receipt_FindByYear(parameter.ToString()))
                 {
                     this.receiptList.Add(receipt);
@@ -667,6 +713,151 @@ namespace EE.BM
             }
         }
 
+        private void newReceipt(object parameter)
+        {
+            this.InputDate = DateTime.Now.ToString();
+
+            receipt = new ReceiptModel()
+            {
+                InputerID = loginUser.ID,
+                InputTime = DateTime.Now,
+                YearMonth = this.YearMonth
+            };
+            connection = DataModel.CreateDataConnection();
+
+            SetCurrentStats(ViewModelStatus.NewRecord);
+
+            #region reset
+            this.Remark = string.Empty;
+            this.AnimalNo = string.Empty;
+            this.BLNO = string.Empty;
+            this.Client = string.Empty;
+            this.CommercialNo = string.Empty;
+            this.Company = string.Empty;
+            this.Contacter = string.Empty;
+            this.Container = string.Empty;
+            this.DiseaseChequeNo = string.Empty;
+            this.DiseaseFee = string.Empty;
+            this.DisinfectChequeNo = string.Empty;
+            this.DisinfectFee = string.Empty;
+            this.HealthNo = string.Empty;
+            this.IsAnimal = false;
+            this.IsCommercial = false;
+            this.IsHealth = false;
+            this.OutputMessage = string.Empty;
+            this.Mobile = string.Empty;
+            this.Place = string.Empty;
+            this.Port = string.Empty;
+            this.Production = string.Empty;
+            #endregion
+        }
+
+        private void exportToExcel(object parameter)
+        {
+            string path;
+            if(null == parameter)
+            {
+                ShowMessage("数据集为空，请先查询!");
+                return;
+            }
+            else
+            {
+                path = Path.GetDirectoryName((string)parameter);
+            }
+            
+            if (this.ReceiptList == null || this.ReceiptList.Count == 0)
+            {
+                ShowMessage("数据集为空，请先查询!");
+                return;
+            }
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(Path.GetFullPath(path));
+                }
+            }
+            catch(IOException ex)
+            {
+                throw ex;
+            }
+            try
+            {
+                using (ExcelExport excelComponent = new ExcelExport((string)parameter))
+                {
+                    string sheetName = string.Empty;
+                    Microsoft.Office.Interop.Excel._Worksheet workSheet = null;
+                    for (int i = 0, rowIndex = 0; i < this.ReceiptList.Count; i++, rowIndex++)
+                    {
+                        DateTime date;
+                        var receipt = this.ReceiptList[i];
+
+                        if (DateTime.TryParse(receipt.YearMonth, out date))
+                        {
+                            var month = date.Month.ToString();
+                            if (sheetName != month)
+                            {
+                                sheetName = month;
+                                workSheet = excelComponent.CreateSheet(i, sheetName);
+
+                                generateExcelColumn(excelComponent, workSheet);
+
+                                rowIndex = 1;
+                            }
+                            generateExcelCell(rowIndex + 1, receipt, excelComponent, workSheet);
+                        }
+                    }
+                    excelComponent.SaveAsFile();
+                    ShowMessage("Excel生成成功！");
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void generateExcelColumn(ExcelExport component, Microsoft.Office.Interop.Excel._Worksheet workSheet)
+        {
+            component.SetCells(1, 1, "日期", workSheet);
+            component.SetCells(1, 2, "港口", workSheet);
+            component.SetCells(1, 3, "客户", workSheet);
+            component.SetCells(1, 4, "经营单位", workSheet);
+            component.SetCells(1, 5, "品名", workSheet);
+            component.SetCells(1, 6, "提单号", workSheet);
+            component.SetCells(1, 7, "箱量", workSheet);
+            component.SetCells(1, 8, "动检号", workSheet);
+            component.SetCells(1, 9, "场地", workSheet);
+            component.SetCells(1, 10, "商", workSheet);
+            component.SetCells(1, 11, "动", workSheet);
+            component.SetCells(1, 12, "卫", workSheet);
+            component.SetCells(1, 13, "备注", workSheet);
+            component.SetCells(1, 14, "检疫费", workSheet);
+            component.SetCells(1, 15, "消毒费", workSheet);
+            component.SetCells(1, 16, "检支票", workSheet);
+            component.SetCells(1, 17, "消支票", workSheet);
+        }
+
+        private void generateExcelCell(int row, ReceiptModel receipt, ExcelExport component, Microsoft.Office.Interop.Excel._Worksheet workSheet)
+        {
+            component.SetCells(row, 1, receipt.YearMonth, workSheet);
+            component.SetCells(row, 2, receipt.Port, workSheet);
+            component.SetCells(row, 3, receipt.Client, workSheet);
+            component.SetCells(row, 4, receipt.Company, workSheet);
+            component.SetCells(row, 5, receipt.Production, workSheet);
+            component.SetCells(row, 6, receipt.BLNO, workSheet);
+            component.SetCells(row, 7, receipt.Container, workSheet);
+            component.SetCells(row, 8, receipt.AnimalNo, workSheet);
+            component.SetCells(row, 9, receipt.Place, workSheet);
+            component.SetCells(row, 10, receipt.IsCommercial ? new string(new char[] { '√' }) : "", workSheet);
+            component.SetCells(row, 11, receipt.IsAnimal ? new string(new char[] { '√' }) : "", workSheet);
+            component.SetCells(row, 12, receipt.IsHealth ? new string(new char[] { '√' }) : "", workSheet);
+            component.SetCells(row, 13, receipt.Remark, workSheet);
+            component.SetCells(row, 14, receipt.DiseaseFee.ToString(), workSheet);
+            component.SetCells(row, 15, receipt.DisinfectFee.ToString(), workSheet);
+            component.SetCells(row, 16, receipt.DiseaseChequeNo, workSheet);
+            component.SetCells(row, 17, receipt.DisinfectChequeNo, workSheet);
+        }
         #endregion
 
         public ViewModelStatus GetCurrentStatus()
@@ -692,6 +883,12 @@ namespace EE.BM
         public UserModel GetCurrentLoginUser()
         {
             return this.loginUser;
+        }
+
+
+        public void ShowMessage(string message)
+        {
+            OutputMessage += string.Format("{0}: {1}{2}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), message, Environment.NewLine);
         }
     }
 }

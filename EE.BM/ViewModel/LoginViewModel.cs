@@ -137,5 +137,11 @@ namespace EE.BM
         {
             return this.loginUser;
         }
+
+
+        public void ShowMessage(string message)
+        {
+            OutputMessage += string.Format("{0}: {1}{2}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), message, Environment.NewLine);
+        }
     }
 }

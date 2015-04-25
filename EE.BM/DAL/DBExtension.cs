@@ -87,7 +87,7 @@ namespace EE.BM.DAL
         private static ReceiptModel Receipt_Insert(this ITable<ReceiptModel> Receipt, string Client, string Company, string Production,
             string BLNO, string Container, string AnimalNo, string Place, bool IsCommercial, bool IsAnimal, bool IsHealth,
             string Remark, decimal DiseaseFee, decimal DisinfectFee, string DiseaseChequeNo, string DisinfectChequeNo,
-            string Mobile, string Date, string Port, string Contacter, string HealthNo, string CommercialNo)
+            string Mobile, string Date, string Port, string Contacter, string HealthNo, string CommercialNo,DateTime InputTime, int InputerID)
         {
             try
             {
@@ -113,9 +113,11 @@ namespace EE.BM.DAL
                     DisinfectFee = DisinfectFee,
                     DisinfectChequeNo = DisinfectChequeNo,
                     HealthNo = HealthNo,
-                    CommercialNo = CommercialNo
+                    CommercialNo = CommercialNo,
+                    InputTime = InputTime,
+                    InputerID = InputerID
                 });
-                ReceiptModel current = Receipt.Single((e) => e.YearMonth == Date);
+                ReceiptModel current = Receipt.Single((e) => e.InputerID == InputerID && e.InputTime == InputTime);
 
                 return current;
             }
@@ -132,7 +134,7 @@ namespace EE.BM.DAL
             ReceiptModel newRecord = Receipt.Receipt_Insert(receiptModel.Client,receiptModel.Company,receiptModel.Production,receiptModel.BLNO,receiptModel.Container,receiptModel.AnimalNo
                 , receiptModel.Place,receiptModel.IsCommercial,receiptModel.IsAnimal,receiptModel.IsHealth,receiptModel.Remark,receiptModel.DiseaseFee,
                 receiptModel.DisinfectFee,receiptModel.DiseaseChequeNo,receiptModel.DisinfectChequeNo,receiptModel.Mobile,receiptModel.YearMonth,receiptModel.Port,receiptModel.Contacter,
-                receiptModel.HealthNo,receiptModel.CommercialNo);
+                receiptModel.HealthNo,receiptModel.CommercialNo,receiptModel.InputTime,receiptModel.InputerID);
 
             if (newRecord == null)
             {
@@ -247,7 +249,9 @@ namespace EE.BM.DAL
         {
             List<object> yearList = new List<object>();
 
-            var query = Receipt.GroupBy(x => new { x.YearMonth }).Select(g => g.Key);
+            var query = Receipt.GroupBy(x => new { x.YearMonth }).Select(g => g.Key).OrderByDescending(g=>g.YearMonth);
+
+            string pYear = string.Empty;
 
             foreach (var q in query)
             {
@@ -255,7 +259,11 @@ namespace EE.BM.DAL
                 if (q.YearMonth.IndexOfAny(new char[] { '/', '-' }) > -1)
                 {
                     string year = q.YearMonth.Split(new char[] { '/', '-' })[0];
-                    yearList.Add(Helper.CreateKeyValueObject(year,year));
+                    if (!pYear.Equals(year))
+                    {
+                        yearList.Add(Helper.CreateKeyValueObject(year, year));
+                        pYear = year;
+                    }
                 }
             }
 
@@ -273,7 +281,7 @@ namespace EE.BM.DAL
         {
             List<ReceiptModel> receiptList = new List<ReceiptModel>();
             var query = Receipt.Where(r => r.YearMonth.Contains(Year)).OrderByDescending(x=>x.YearMonth);
-
+            
             foreach (var q in query)
             {
                 receiptList.Add(q);
