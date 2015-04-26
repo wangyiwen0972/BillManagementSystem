@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Reflection;
+using EE.BM.Model;
 namespace EE.BM.Utility
 {
     public static class Helper
@@ -54,6 +56,25 @@ namespace EE.BM.Utility
             object rtnObject = new { DisplayMember = display, ValueMember = value };
 
             return rtnObject;
+        }
+
+        public static Action GetActionFromPermission(object command, UserModel user)
+        {
+            Type vmType = typeof(ReceiptViewModel);
+
+            foreach (var property in vmType.GetProperties())
+            {
+                
+            }
+
+            //foreach (PermissionAttribute permission in permissionList)
+            //{
+            //    if (permission.RightID == user.Right_ID)
+            //    {
+            //        return permission.Action;
+            //    }
+            //}
+            return Action.Invisible;
         }
 
     }

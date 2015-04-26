@@ -292,7 +292,7 @@
                     <DockPanel>
                         <StackPanel Orientation="Horizontal" Width="{Binding ElementName=w,Path=Width}" DockPanel.Dock="Top">
                             <TextBlock Margin="5,5,0,0" FontSize="12" VerticalAlignment="Center">请选择年份:</TextBlock>
-                            <ComboBox Margin="10,0,0,0" Width="80" SelectionChanged="ComboBox_SelectionChanged" ItemsSource="{Binding YearList,Mode=TwoWay}" SelectedItem="{Binding Year, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember"> 
+                            <ComboBox Name="cbYear" Margin="10,0,0,0" Width="80" SelectionChanged="ComboBox_SelectionChanged" ItemsSource="{Binding YearList,Mode=TwoWay}" SelectedItem="{Binding Year, Mode=TwoWay}" DisplayMemberPath="DisplayMember" SelectedValuePath="ValueMember"> 
                             </ComboBox>
                             <Button Name="btnExport" Margin="5,0,0,0" Click="btnExport_Click">
                                 <StackPanel Orientation="Horizontal">
@@ -301,7 +301,7 @@
                                 </StackPanel>
                             </Button>
                         </StackPanel>
-                        <DataGrid ItemsSource="{Binding ReceiptList}" DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" >
+                        <DataGrid Name="dgReceipt" ItemsSource="{Binding ReceiptList}" DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" >
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="IsEnabled" Value="False"/>
@@ -331,22 +331,54 @@
                                 <DataGridTextColumn Header="备注" Binding="{Binding Remark}" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>
+                        <!--分页-->
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="45" VerticalAlignment="Top" Visibility="Hidden">
+                            <TextBlock Text="转到" Margin="5" VerticalAlignment="Center"/>
+                            <TextBox Name="tbxPageNum" Text="" Height="20" Width="25" Margin="5" VerticalAlignment="Center" />
+                            <TextBlock Text="页" Margin="5" VerticalAlignment="Center"/>
+                            <Button Content="GO" VerticalAlignment="Center" Margin="5"  Click="btnGo_Click"/>
+                            <Button Name="btnUp" Content="上一页" Margin="5" VerticalAlignment="Center" Click="btnUp_Click"/>
+                            <Button Name="btnNext" Content="下一页" Margin="5" VerticalAlignment="Center" Click="btnNext_Click"/>
+                            <TextBlock Height="20" VerticalAlignment="Center" Margin="5,5,0,0"> 
+             <TextBlock Text="【共" /> 
+             <TextBlock Name="tbkTotal" Foreground="Red" /> 
+             <TextBlock Text="页】" VerticalAlignment="Center"/> 
+             <TextBlock Text="【当前" /> 
+             <TextBlock Name="tbkCurrentsize" Foreground="Red" /> 
+             <TextBlock Text="页】" /> 
+       </TextBlock>
+                        </StackPanel>
                     </DockPanel>
                 </TabItem>
                 <TabItem Header="高级查询">
                     <DockPanel>
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                            <TextBlock VerticalAlignment="Center">查询栏：</TextBlock>
-                            <ComboBox Width="100" Height="25"/>
-                            <TextBlock VerticalAlignment="Center">操作符：</TextBlock>
-                            <ComboBox Width="100" Height="25">
-                                <ComboBoxItem></ComboBoxItem>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5,0,0,0">
+                            <TextBlock VerticalAlignment="Center" Margin="5">查询栏：</TextBlock>
+                            <ComboBox Width="100" Height="25" Margin="5"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5">操作符：</TextBlock>
+                            <ComboBox Width="100" Height="25" Margin="5">
+                                <ComboBoxItem>&lt;</ComboBoxItem>
+                                <ComboBoxItem>&lt;=</ComboBoxItem>
+                                <ComboBoxItem>=</ComboBoxItem>
+                                <ComboBoxItem>=&gt;</ComboBoxItem>
+                                <ComboBoxItem>&gt;</ComboBoxItem>
+                                <ComboBoxItem>Contains</ComboBoxItem>
                             </ComboBox>
-                            <TextBlock VerticalAlignment="Center">关键字：</TextBlock>
-                            <TextBox Width="200"/>
-                            <Button/>
+                            <TextBlock VerticalAlignment="Center" Margin="5">关键字：</TextBlock>
+                            <TextBox Width="200" Margin="5"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5">逻辑操作符：</TextBlock>
+                            <ComboBox Width="80" Height="25" Margin="5" HorizontalContentAlignment="Center">
+                                <ComboBoxItem IsSelected="True" >无</ComboBoxItem>
+                                <ComboBoxItem>或</ComboBoxItem>
+                                <ComboBoxItem>与</ComboBoxItem>
+                            </ComboBox>
                         </StackPanel>
-                        <ListBox Width="500" DockPanel.Dock="Top" Height="64" Margin="10" HorizontalAlignment="Left"></ListBox>
+                        
+                        <TextBlock DockPanel.Dock="Top" Margin="10,5,0,0">组合查询框：</TextBlock>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <ListBox Width="500" DockPanel.Dock="Top" Height="64" Margin="10" HorizontalAlignment="Left"></ListBox>
+                            <Button Width="100" Height="25" Content="查询" />
+                        </StackPanel>
                         <DataGrid DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" Width="996" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="月份" Binding="{Binding YearMonth}" Width="80"/>

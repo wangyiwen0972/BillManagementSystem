@@ -38,6 +38,8 @@ namespace EE.BM
 
             //get vm lists from database
             InitializePropertyList();
+
+            NewCommand = new DelegateCommand() { ExecuteCommand = new Action<object>(newReceipt)};
         }
 
         public ReceiptViewModel(UserModel user, ReceiptModel receipt):this(user)
@@ -556,22 +558,31 @@ namespace EE.BM
         #endregion
 
         #region View Model Commands
+        private DelegateCommand newCommand;
+        
         /// <summary>
         /// 新建
         /// </summary>
+        [PermissionAttribute(1, BM.Action.Executable)]
+        [PermissionAttribute(2, BM.Action.Executable)]
+        [PermissionAttribute(3, BM.Action.Visible)]
         public DelegateCommand NewCommand
         {
             get
             {
-                return new DelegateCommand()
-                {
-                    ExecuteCommand = new Action<object>(newReceipt)
-                };
+                return newCommand;
+            }
+            set
+            {
+                newCommand = value;
             }
         }
         /// <summary>
         /// 删除
         /// </summary>
+        [Permission(1, BM.Action.Executable)]
+        [Permission(2, BM.Action.Visible)]
+        [Permission(3, BM.Action.Invisible)]
         public DelegateCommand DeleteCommand
         {
             get
@@ -585,6 +596,9 @@ namespace EE.BM
         /// <summary>
         /// 保存
         /// </summary>
+        [Permission(1, BM.Action.Executable)]
+        [Permission(2, BM.Action.Visible)]
+        [Permission(3, BM.Action.Invisible)]
         public DelegateCommand SaveCommand
         {
             get
@@ -598,6 +612,9 @@ namespace EE.BM
         /// <summary>
         /// 导出
         /// </summary>
+        [Permission(1, BM.Action.Executable)]
+        [Permission(2, BM.Action.Visible)]
+        [Permission(3, BM.Action.Invisible)]
         public DelegateCommand ExportToExcelCommand
         {
             get
@@ -608,7 +625,9 @@ namespace EE.BM
                 };
             }
         }
-
+        [Permission(1, BM.Action.Executable)]
+        [Permission(2, BM.Action.Visible)]
+        [Permission(3, BM.Action.Invisible)]
         public DelegateCommand SearchReceiptCommand
         {
             get

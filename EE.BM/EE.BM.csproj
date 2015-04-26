@@ -66,6 +66,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Core\NotificationObject.cs" />
+    <Compile Include="Core\PermissionAttribute.cs" />
     <Compile Include="DAL\DBConnection.cs" />
     <Compile Include="DAL\DBExtension.cs" />
     <Compile Include="Export\Excel.cs" />
