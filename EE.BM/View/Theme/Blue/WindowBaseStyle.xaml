@@ -266,16 +266,16 @@
                 </Border>
                 <!--内容-->
                 <Grid x:Name="gridContent" Grid.Row="1" Margin="6">
-                    <my:UserImage x:Name="imgProgress" Width="80" Height="80" Visibility="Visible" />
-                    <ProgressBar x:Name="pbWorkProgress" Maximum="100" Minimum="0" Value="0" Width="100" Height="20" Style="{StaticResource ProgressBarStyle}" Visibility="Hidden" />
+                    <my:UserImage x:Name="imgProgress" Width="80" Height="80" Visibility="Collapsed" />
+                    <ProgressBar x:Name="pbWorkProgress" Maximum="100" Minimum="0" Value="0" Width="100" Height="20" Style="{StaticResource ProgressBarStyle}" Visibility="Collapsed" />
                     <ContentPresenter />
                 </Grid>
 
                 <Border Grid.Row="3" CornerRadius="{StaticResource winStatusCorner}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
                         <!--<Button x:Name="btnYes" Style="{StaticResource btnStyle}"></Button>
                         <Button x:Name="btnNo" Style="{StaticResource btnStyle}"></Button>-->
-                        <TextBox x:Name="rtbStatus" Style="{StaticResource rtbStyle}" Width="{Binding ElementName=w, Path=Width}" Text="{Binding OutputMessage}"></TextBox>
+                        <TextBox Margin="5,0,0,5" x:Name="rtbStatus" Style="{StaticResource rtbStyle}" Width="{Binding ElementName=w, Path=Width}" Text="{Binding OutputMessage}"></TextBox>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -431,12 +431,7 @@
                             </ToggleButton.Template>
                         </ToggleButton>
                         <ContentPresenter HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="ContentSite" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" IsHitTestVisible="False"/>
-                        <TextBox Visibility="Hidden" HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="PART_EditableTextBox" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}">
-                            <TextBox.Template>
-                                <ControlTemplate TargetType="{x:Type TextBox}">
-                                    <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}"/>
-                                </ControlTemplate>
-                            </TextBox.Template>
+                        <TextBox Visibility="Hidden" HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="PART_EditableTextBox" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}" BorderThickness="0" BorderBrush="Transparent">
                         </TextBox>
                         <Rectangle x:Name="DisabledVisualElement" Fill="#A5FFFFFF" RadiusX="4" RadiusY="4" IsHitTestVisible="false" Visibility="Collapsed"/>
                         <Rectangle x:Name="FocusVisualElement" Margin="-1" Stroke="#FFCECFD0" StrokeThickness="1" RadiusX="4" RadiusY="4" IsHitTestVisible="false" Opacity="0"/>
@@ -567,7 +562,7 @@
     <Style TargetType="Button">
         <Setter Property="FontFamily" Value="Microsoft YaHei" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="#FFFFFF" />
+        <Setter Property="Foreground" Value="#000000" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="FlowDirection" Value="LeftToRight" />
         <Setter Property="BorderThickness" Value="0" />

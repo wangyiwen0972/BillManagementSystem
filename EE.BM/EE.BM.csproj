@@ -47,6 +47,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -80,7 +81,13 @@
     <Compile Include="ViewModel\ReceiptViewModel.cs" />
     <Compile Include="View\Base\ConfigManage.cs" />
     <Compile Include="View\Base\WindowBase.cs" />
+    <Compile Include="View\UserControl\userDetail.xaml.cs">
+      <DependentUpon>userDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControl\UserImage.cs" />
+    <Compile Include="View\UserControl\userToolBar.xaml.cs">
+      <DependentUpon>userToolBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\wdLogin.xaml.cs">
       <DependentUpon>wdLogin.xaml</DependentUpon>
     </Compile>
@@ -91,7 +98,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="View\wdOpen.xaml.cs">
+      <DependentUpon>wdOpen.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\Theme\Blue\WindowBaseStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\userDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\userToolBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -100,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\wdMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\wdOpen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +202,7 @@
     <Resource Include="Resources\Copy_Document.png" />
     <Resource Include="Resources\excel.png" />
     <Resource Include="Resources\Close.png" />
+    <Resource Include="Resources\background.png" />
     <Content Include="Resources\Folder generic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

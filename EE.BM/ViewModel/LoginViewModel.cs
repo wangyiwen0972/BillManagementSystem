@@ -30,7 +30,7 @@ namespace EE.BM
         {
             get
             {
-                return new DelegateCommand()
+                return new DelegateCommand("LoginCommand")
                 {
                     ExecuteCommand = new Action<object>(Login)
                 };
@@ -41,7 +41,7 @@ namespace EE.BM
         {
             get
             {
-                return new DelegateCommand()
+                return new DelegateCommand("RegisterCommand")
                 {
                     ExecuteCommand = new Action<object>(Register)
                 };

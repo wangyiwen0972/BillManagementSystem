@@ -28,36 +28,23 @@ namespace EE.BM.View
         {
             InitializeComponent();
 
-            this.dpYearMonth.IsTodayHighlighted = false;
-            this.dpYearMonth.DisplayDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM"));
+            
 
             this.Loaded += (s, e) =>
                 {
-                    reciptVM = this.DataContext as ReceiptViewModel;
+                    InitializePermissionForComponenet();
 
+                    this.userReceiptDetail.DataContext = reciptVM;
+                };            
+        }
 
-                    Action action = Helper.GetActionFromPermission(reciptVM.NewCommand, reciptVM.GetCurrentLoginUser());
-                    this.btnNew.Visibility = action == Action.Invisible ? Visibility.Collapsed : Visibility.Visible;
-                    this.btnNew.IsEnabled = action == Action.Executable ? true : false;
+        private void InitializePermissionForComponenet()
+        {
+            reciptVM = this.DataContext as ReceiptViewModel;
 
-                    
+            //export to excel
+            base.SetEnableVisible(this.btnExport, base.GetPermission(reciptVM.ExportToExcelCommand, reciptVM));
 
-                };
-            //System.Drawing.Bitmap bitmap = Properties.Resources.Folder_generic;
-
-            //System.IO.MemoryStream stream = new System.IO.MemoryStream();
-            //bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-            ////ImageBrush imageBrush = new ImageBrush();
-            //ImageSourceConverter convert = new ImageSourceConverter();
-
-            ////imageBrush.ImageSource = convert.ConvertFrom(stream) as ImageSource;
-
-            //Image imgNew = new Image()
-            //{
-            //    Source = convert.ConvertFrom(stream) as ImageSource
-            //};
-            //btnNew.Content = imgNew;
-            
         }
 
         private void GetEnableOrVisible(Control control, Action action)
@@ -86,9 +73,14 @@ namespace EE.BM.View
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //ReceiptViewModel context = this.DataContext as ReceiptViewModel;
-            (sender as Button).CaptureMouse();
-            //context.SaveCommand.Execute(null);
+            try
+            {
+                this.reciptVM.SaveCommand.Execute(null);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void TabItem_GotFocus(object sender, RoutedEventArgs e)
@@ -133,7 +125,10 @@ namespace EE.BM.View
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("当前数据被清空");
+            if (MessageBox.Show("当前数据将被清空，是否继续？") == MessageBoxResult.Yes)
+            {
+                this.reciptVM.NewCommand.Execute(null);
+            }
         }
 
         private void Binding(int number, int currentSize)
@@ -197,6 +192,37 @@ namespace EE.BM.View
             if (pageNum >= 1 && pageNum <= total)
             {
                 Binding(Num, pageNum);     //调用分页方法  
+            }
+        }
+
+        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            wdOpen openWindow = new wdOpen()
+            {
+                Owner = this,
+                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner
+            };
+            openWindow.StatusTextBox.Visibility = System.Windows.Visibility.Hidden;
+
+            if (openWindow.ShowDialog() == true)
+            {
+                var specifiedReceipt = reciptVM.locateReceiptBySingleNo(openWindow.SearchText);
+
+                var newReceiptDetail = new userDetail()
+                {
+                    DataContext = new ReceiptViewModel(reciptVM.GetCurrentLoginUser(),specifiedReceipt)
+                };
+
+                WindowBase window = new WindowBase()
+                {
+                    Content = newReceiptDetail,
+                    Width = 1024,
+                    Height = newReceiptDetail.Height,
+                    Owner = this,
+                    WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner
+                };
+                
+                window.Show();
             }
         }  
     }

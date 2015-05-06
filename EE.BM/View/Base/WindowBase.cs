@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using EE.BM.Utility;
 
 namespace EE.BM.View
 {
@@ -51,6 +52,12 @@ namespace EE.BM.View
             set;
         }
 
+        public TextBox StatusTextBox
+        {
+            get;
+            set;
+        }
+
         private void InitializeEvent()
         {
             ControlTemplate baseWindowTemplate = (ControlTemplate)App.Current.Resources["BaseWindowControlTemplate"];
@@ -61,6 +68,7 @@ namespace EE.BM.View
             YesButton = (Button)baseWindowTemplate.FindName("btnYes", this);
             NoButton = (Button)baseWindowTemplate.FindName("btnNo", this);
             ImageProgress = baseWindowTemplate.FindName("imgProgress", this) as UserImage;
+            StatusTextBox = baseWindowTemplate.FindName("rtbStatus", this) as TextBox;
 
             minBtn.Click += delegate
             {
@@ -80,7 +88,7 @@ namespace EE.BM.View
                 }
             };
 
-
+            this.Title = "账单管理系统";
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -143,6 +151,21 @@ namespace EE.BM.View
         {
             imgProgress.Visibility = System.Windows.Visibility.Hidden;
             imgProgress.StopAnimate();
+        }
+
+        protected Action GetPermission(object obj,IViewModel viewModel)
+        {
+            return Helper.GetActionFromPermission(obj, viewModel.GetCurrentLoginUser());
+        }
+
+        protected void SetEnableVisible(Control control, Action action)
+        {
+            control.Visibility = action == Action.Invisible ? Visibility.Collapsed : Visibility.Visible;
+            control.IsEnabled = action == Action.Executable ? true : false;
+            if (action != Action.Executable)
+            {
+                control.ToolTip = "您当前的用户组无法执行该操作！";
+            }
         }
     }
 }

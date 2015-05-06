@@ -1,0 +1,13 @@
+﻿<my:WindowBase x:Class="EE.BM.View.wdOpen"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="w"
+        xmlns:my="clr-namespace:EE.BM.View"
+        Title="wdOpen" Height="200" Width="300">
+    <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock Text="请输入唯一编号:" Margin="5"/>
+            <TextBox Margin="5 0 0 0" Width="100" Name="txtSingleNo"></TextBox>
+            <Button Content="确定" Width="50" Margin="15 0 0 0" Style="{StaticResource ButtonGeneral}" Name="btnOK" Click="btnOK_Click"/>
+        </StackPanel>
+    </Grid>
+</my:WindowBase>

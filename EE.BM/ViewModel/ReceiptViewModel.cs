@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EE.BM.DAL;
-using EE.BM.Model;
-using EE.BM.Utility;
-using EE.BM.Export;
-using System.IO;
-
-namespace EE.BM
+﻿namespace EE.BM
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using EE.BM.DAL;
+    using EE.BM.Model;
+    using EE.BM.Utility;
+    using EE.BM.Export;
+    using System.IO;
+
     public class ReceiptViewModel : NotificationObject,IViewModel
     {
         #region private variables
@@ -22,15 +22,19 @@ namespace EE.BM
         //basic connection of database
         private BMConnection connection = null;
 
+        private bool isInvaild = false;
+
         #endregion
 
+        #region contructors
         public ReceiptViewModel(UserModel user)
         {
             loginUser = user;
             receipt = new ReceiptModel()
             {
+                SingleNo = Helper.GetTimeTicks(),
                 InputerID = loginUser.ID,
-                InputTime = DateTime.Now
+                InputTime = DateTime.Now                
             };
             connection = DataModel.CreateDataConnection();
 
@@ -39,13 +43,17 @@ namespace EE.BM
             //get vm lists from database
             InitializePropertyList();
 
-            NewCommand = new DelegateCommand() { ExecuteCommand = new Action<object>(newReceipt)};
+            NewCommand = new DelegateCommand("NewCommand") { ExecuteCommand = new Action<object>(newReceipt) };
         }
-
+        
         public ReceiptViewModel(UserModel user, ReceiptModel receipt):this(user)
         {
-            SetCurrentStats(ViewModelStatus.NoChange);
+            this.receipt = receipt;
+            this.loadReceipt(null);
+            //set the default status
+            this.SetCurrentStats(ViewModelStatus.NoChange);
         }
+        #endregion
 
         #region View Model Properties
         /// <summary>
@@ -196,7 +204,7 @@ namespace EE.BM
         /// </summary>
         public string BLNO
         {
-            get { return this.receipt.BLNO; }
+            get { return blno; }
             set 
             { 
                 base.SetProperty<string>(ref blno, value, () => this.receipt.BLNO);
@@ -296,7 +304,7 @@ namespace EE.BM
                     }
                     else
                     {
-                        this.SetCurrentStats(ViewModelStatus.Invaild);
+                        ShowMessage("检疫费只能填写数字类型");
                     }
                 }
             }
@@ -322,7 +330,7 @@ namespace EE.BM
                     }
                     else
                     {
-                        this.SetCurrentStats(ViewModelStatus.Invaild);
+                        ShowMessage("消毒费只能填写数字类型");
                     }
                 }
             }
@@ -490,6 +498,17 @@ namespace EE.BM
             }
         }
 
+        private string singleNo;
+
+        public string SingleNo
+        {
+            get { return receipt.SingleNo; }
+            set 
+            { 
+                base.SetProperty<string>(ref singleNo, value, () => this.SingleNo);
+                receipt.SingleNo = value;
+            }
+        }
 
 
         #endregion
@@ -587,9 +606,9 @@ namespace EE.BM
         {
             get
             {
-                return new DelegateCommand()
+                return new DelegateCommand("DeleteCommand")
                 {
-
+                    ExecuteCommand = new Action<object>(delete)
                 };
             }
         }
@@ -603,7 +622,7 @@ namespace EE.BM
         {
             get
             {
-                return new DelegateCommand()
+                return new DelegateCommand("SaveCommand")
                 {
                     ExecuteCommand = new Action<object>(save)
                 };
@@ -619,7 +638,7 @@ namespace EE.BM
         {
             get
             {
-                return new DelegateCommand()
+                return new DelegateCommand("ExportToExcelCommand")
                 {
                     ExecuteCommand = new Action<object>(exportToExcel)
                 };
@@ -632,9 +651,46 @@ namespace EE.BM
         {
             get
             {
-                return new DelegateCommand()
+                return new DelegateCommand("SearchReceiptCommand")
                 {
                     ExecuteCommand = new Action<object>(filterReceiptByYear)
+                };
+            }
+        }
+        /*
+        public DelegateCommand LocateReceiptCommand
+        {
+            get
+            {
+                return new DelegateCommand("LocateReceiptCommand")
+                {
+                };
+            }
+        }
+         * */
+
+        [Permission(1, BM.Action.Executable)]
+        [Permission(2, BM.Action.Visible)]
+        [Permission(3, BM.Action.Invisible)]
+        public DelegateCommand PreviewCommand
+        {
+            get
+            {
+                return new DelegateCommand("PreviewCommand")
+                {
+                };
+            }
+        }
+
+        [Permission(1, BM.Action.Executable)]
+        [Permission(2, BM.Action.Executable)]
+        [Permission(3, BM.Action.Visible)]
+        public DelegateCommand CopyReceiptCommand
+        {
+            get
+            {
+                return new DelegateCommand("CopyReceiptCommand")
+                {
                 };
             }
         }
@@ -663,6 +719,11 @@ namespace EE.BM
                             if (connection.GetTable<ReceiptModel>().Receipt_Insert(ref this.receipt))
                             {
                                 this.SetCurrentStats(ViewModelStatus.Saved);
+                                this.ShowMessage("数据保存成功！");
+                            }
+                            else
+                            {
+                                this.ShowMessage("新建数据失败！");
                             }
                         }
                         else
@@ -670,13 +731,29 @@ namespace EE.BM
                             if (connection.Receipt_Update(this.receipt))
                             {
                                 this.SetCurrentStats(ViewModelStatus.Saved);
+
+
+
+                                this.ShowMessage("数据保存成功！");
+                            }
+                            else
+                            {
+                                this.ShowMessage("数据更新失败！");
                             }
                         }
                     }
+                    else
+                    {
+                        throw new Exception("部分数据未填写，请检查数据！");
+                    }
                 }
-                catch(Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    throw ex;
+                }
+                finally
+                {
+                    InitializePropertyList();
                 }
             }
         }
@@ -686,11 +763,24 @@ namespace EE.BM
         /// <param name="parameter"></param>
         private void delete(object parameter)
         {
+            try
+            {
+                connection.GetTable<ReceiptModel>().Receipt_Delete(this.receipt.ID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void InitializePropertyList()
         {
             LinqToDB.ITable<ReceiptModel> iTable = connection.GetTable<ReceiptModel>();
+
+            this.portList.Clear();
+            this.companyList.Clear();
+            this.clientList.Clear();
+            this.productList.Clear();
 
             foreach (object port in iTable.GetPortList())
             {
@@ -738,6 +828,7 @@ namespace EE.BM
 
             receipt = new ReceiptModel()
             {
+                SingleNo = Helper.GetTimeTicks(),
                 InputerID = loginUser.ID,
                 InputTime = DateTime.Now,
                 YearMonth = this.YearMonth
@@ -768,6 +859,36 @@ namespace EE.BM
             this.Place = string.Empty;
             this.Port = string.Empty;
             this.Production = string.Empty;
+            #endregion
+        }
+
+        private void loadReceipt(object parameter)
+        {
+            this.InputDate = receipt.InputTime.ToString();
+
+            #region load
+
+            this.Remark = receipt.Remark;
+            this.AnimalNo = receipt.AnimalNo;
+            this.BLNO = receipt.BLNO;
+            this.Client = receipt.Client;
+            this.CommercialNo = receipt.CommercialNo;
+            this.Company = receipt.Company;
+            this.Contacter = receipt.Contacter;
+            this.Container = receipt.Container;
+            this.DiseaseChequeNo = receipt.DiseaseChequeNo;
+            this.DiseaseFee = receipt.DiseaseFee.ToString();
+            this.DisinfectChequeNo = receipt.DisinfectChequeNo;
+            this.DisinfectFee = receipt.DisinfectFee.ToString();
+            this.HealthNo = receipt.HealthNo;
+            this.IsAnimal = receipt.IsAnimal;
+            this.IsCommercial = receipt.IsCommercial;
+            this.IsHealth = receipt.IsHealth;
+            this.OutputMessage = string.Empty;
+            this.Mobile = receipt.Mobile;
+            this.Place = receipt.Place;
+            this.Port = receipt.Port;
+            this.Production = receipt.Production;
             #endregion
         }
 
@@ -836,6 +957,42 @@ namespace EE.BM
             }
         }
 
+        public static ReceiptViewModel CopyTo(ReceiptViewModel oldViewModel)
+        {
+            return new ReceiptViewModel(oldViewModel.GetCurrentLoginUser())
+            {
+                AnimalNo = oldViewModel.AnimalNo,
+                BLNO = oldViewModel.BLNO,
+                Client = oldViewModel.Client,
+                
+                CommercialNo = oldViewModel.CommercialNo,
+                Company = oldViewModel.Company,
+                Contacter = oldViewModel.Contacter,
+                Container = oldViewModel.Container,
+                DiseaseChequeNo = oldViewModel.DiseaseChequeNo,
+                DiseaseFee = oldViewModel.DiseaseFee,
+                DisinfectChequeNo = oldViewModel.DisinfectChequeNo,
+                DisinfectFee = oldViewModel.DisinfectFee,
+                HealthNo = oldViewModel.HealthNo,
+                IsCommercial = oldViewModel.IsCommercial,
+                IsAnimal =  oldViewModel.IsAnimal,
+                IsHealth = oldViewModel.IsHealth,
+                Mobile = oldViewModel.Mobile,
+                Place = oldViewModel.Place,
+                Port = oldViewModel.Port,
+                Production = oldViewModel.Production,
+                Remark = oldViewModel.Remark,
+                Year = oldViewModel.Year,
+                YearMonth = oldViewModel.YearMonth
+            };
+        }
+
+        public ReceiptModel locateReceiptBySingleNo(object parameter)
+        {
+            if(parameter == null) return null;
+            return connection.GetTable<ReceiptModel>().Receipt_Find((string)parameter);
+        }
+
         private void generateExcelColumn(ExcelExport component, Microsoft.Office.Interop.Excel._Worksheet workSheet)
         {
             component.SetCells(1, 1, "日期", workSheet);
@@ -879,6 +1036,7 @@ namespace EE.BM
         }
         #endregion
 
+        #region public methods
         public ViewModelStatus GetCurrentStatus()
         {
             if (!string.IsNullOrEmpty(status))
@@ -891,23 +1049,21 @@ namespace EE.BM
             return ViewModelStatus.Invaild;
         }
 
-
-
         public void SetCurrentStats(ViewModelStatus vmStatus)
         {
             this.Status = vmStatus.ToString();
         }
-
 
         public UserModel GetCurrentLoginUser()
         {
             return this.loginUser;
         }
 
-
         public void ShowMessage(string message)
         {
             OutputMessage += string.Format("{0}: {1}{2}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), message, Environment.NewLine);
         }
+
+        #endregion
     }
 }

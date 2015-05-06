@@ -60,22 +60,34 @@ namespace EE.BM.Utility
 
         public static Action GetActionFromPermission(object command, UserModel user)
         {
+            DelegateCommand delegateCommand = command as DelegateCommand;
+
             Type vmType = typeof(ReceiptViewModel);
 
             foreach (var property in vmType.GetProperties())
             {
-                
-            }
+                if (property.Name.Equals(delegateCommand.CommandName, StringComparison.OrdinalIgnoreCase))
+                {
+                    var permissionList = property.GetCustomAttributes<PermissionAttribute>();
 
-            //foreach (PermissionAttribute permission in permissionList)
-            //{
-            //    if (permission.RightID == user.Right_ID)
-            //    {
-            //        return permission.Action;
-            //    }
-            //}
+                    foreach (PermissionAttribute permission in permissionList)
+                    {
+                        if (permission.RightID == user.Right_ID)
+                        {
+                            return permission.Action;
+                        }
+                    }
+                }
+            }
+            
             return Action.Invisible;
         }
+
+        public static string GetTimeTicks()
+        {
+            return DateTime.Now.ToString("yyMMddhhmmss");
+        }
+             
 
     }
 }

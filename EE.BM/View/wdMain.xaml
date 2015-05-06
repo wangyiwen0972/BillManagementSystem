@@ -8,12 +8,12 @@
         <DockPanel >
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_系统">
-                    <MenuItem Header="_New..." />
-                    <MenuItem Header="_Open..." />
+                    <MenuItem Header="_新建" />
+                    <MenuItem Header="_打开" />
                     <Separator />
-                    <MenuItem Header="Sen_d To">
-                        <MenuItem Header="Mail Recipient" />
-                        <MenuItem Header="My Documents" />
+                    <MenuItem Header="发送到">
+                        <MenuItem Header="个人邮箱..." />
+                        <MenuItem Header="我的文档" />
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_设置">
@@ -32,6 +32,7 @@
                 <MenuItem Header="_帮助">
                 </MenuItem>
             </Menu>
+            <!--
             <StackPanel Orientation="Horizontal" Height="32" Margin="5" Width="{Binding ElementName=w,Path=Width}"  DockPanel.Dock="Top" Background="Transparent">
                 <Button Name="btnNew" Margin="5,0,0,0" Command="{Binding NewCommand}" CommandParameter="{x:Null}" Click="btnNew_Click">
                     <StackPanel Orientation="Horizontal">
@@ -39,13 +40,13 @@
                         <TextBlock Text="新建" VerticalAlignment="Center" Foreground="Black"/>
                     </StackPanel>
                 </Button>
-                <Button Name="btnOpen" Margin="5,0,0,0">
+                <Button Name="btnOpen" Margin="5,0,0,0" Click="btnOpen_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/BMStudio;component/resources/Generic Folder smooth.png"/>
                         <TextBlock Text="打开" VerticalAlignment="Center" Foreground="Black"/>
                     </StackPanel>
                 </Button>
-                <Button Name="btnSave" Margin="5,0,0,0" Command="{Binding SaveCommand}">
+                <Button Name="btnSave" Margin="5,0,0,0" Command="{Binding SaveCommand}" Click="btnSave_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/BMStudio;component/resources/Save.png" Height="32"/>
                         <TextBlock Text="保存" VerticalAlignment="Center" Foreground="Black"/>
@@ -69,7 +70,7 @@
                         <TextBlock Text="打印预览" VerticalAlignment="Center" Foreground="Black"/>
                     </StackPanel>
                 </Button>
-                <Button Name="btnPrient" Margin="5,0,0,0">
+                <Button Name="btnPrint" Margin="5,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/BMStudio;component/resources/Folder Printer.png" Height="32"/>
                         <TextBlock Text="打印" VerticalAlignment="Center" Foreground="Black"/>
@@ -87,10 +88,12 @@
                         <TextBlock Text="关闭" VerticalAlignment="Center" Foreground="Black"/>
                     </StackPanel>
                 </Button>
-            </StackPanel>
+            </StackPanel>-->
+            <my:userToolBar DockPanel.Dock="Top"/>
             <TabControl DockPanel.Dock="Top" Margin="0,5,0,0">
                 <TabItem Header="数据录入" >
-                    <StackPanel DockPanel.Dock="Top">
+                    <my:userDetail x:Name="userReceiptDetail"/>
+                    <!--<StackPanel DockPanel.Dock="Top">
                         <Border x:Name="borderBg" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}">
                             <Grid>
                                 <Grid.Resources>
@@ -111,13 +114,17 @@
                                     <ColumnDefinition Width="151"/>
                                     <ColumnDefinition Width="80"/>
                                     <ColumnDefinition Width="151"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="151"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="录入人员:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                                <TextBox Name="txtUser" Grid.Row="0" Grid.Column="1" Width="150" Height="25" IsEnabled="False" Text="{Binding Inputer,Mode=OneWay}"/>
-                                <Label Content="录入时间:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
-                                <TextBox Name="txtInputTime" Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEnabled="False" Text="{Binding InputDate,Mode=OneWay}"/>
-                                <Label Content="数据状态:" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"/>
-                                <TextBox Name="txtRecordStatus" Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEnabled="False" Text="{Binding Status,Mode=TwoWay}"/>
+                                <Label Content="唯一编号:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBox Name="txtSingleNo" Grid.Row="0" Grid.Column="1" Width="150" Height="25" IsEnabled="False" Text="{Binding Inputer,Mode=OneWay}"/>
+                                <Label Content="录入人员:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
+                                <TextBox Name="txtUser" Grid.Row="0" Grid.Column="3" Width="150" Height="25" IsEnabled="False" Text="{Binding Inputer,Mode=OneWay}"/>
+                                <Label Content="录入时间:" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"/>
+                                <TextBox Name="txtInputTime" Grid.Row="0" Grid.Column="5" Width="150" Height="25" IsEnabled="False" Text="{Binding InputDate,Mode=OneWay}"/>
+                                <Label Content="数据状态:" Grid.Row="0" Grid.Column="6" VerticalAlignment="Center"/>
+                                <TextBox Name="txtRecordStatus" Grid.Row="0" Grid.Column="7" Width="150" Height="25" IsEnabled="False" Text="{Binding Status,Mode=TwoWay}"/>
                             </Grid>
                         </Border>
                         <Border x:Name="borderBg1" Margin="5" Background="White" BorderBrush="Black" Opacity="0.9" BorderThickness="1" CornerRadius="{StaticResource winCorner}" Style="{StaticResource winStyle}" Height="auto">
@@ -286,7 +293,8 @@
                                 
                             </Grid>
                         </Border>
-                    </StackPanel>
+                    </StackPanel>-->
+                    
                 </TabItem>
                 <TabItem Header="数据查询" GotFocus="TabItem_GotFocus" Name="execlTab">
                     <DockPanel>
@@ -377,7 +385,7 @@
                         <TextBlock DockPanel.Dock="Top" Margin="10,5,0,0">组合查询框：</TextBlock>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                             <ListBox Width="500" DockPanel.Dock="Top" Height="64" Margin="10" HorizontalAlignment="Left"></ListBox>
-                            <Button Width="100" Height="25" Content="查询" />
+                            <Button Width="80" Height="25" Content="查询" Style="{StaticResource ButtonGeneral}"/>
                         </StackPanel>
                         <DataGrid DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" Width="996" >
                             <DataGrid.Columns>

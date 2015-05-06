@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LinqToDB.Mapping;
 using EE.BM.DAL;
+using System.Reflection;
 
 namespace EE.BM.Model
 {
@@ -12,29 +13,34 @@ namespace EE.BM.Model
     public class ReceiptModel:DataModel,IModel
     {
         /// <summary>
-        /// 唯一序号
+        /// ID
         /// </summary>
         [Column,PrimaryKey,Identity]
         public int ID { get; set; }
         /// <summary>
-        /// 日期
+        /// 唯一序号
         /// </summary>
         [Column, PrimaryKey]
+        public string SingleNo { get; set; }
+        /// <summary>
+        /// 日期
+        /// </summary>
+        [Column, NotNull]
         public string YearMonth { get; set; }
         /// <summary>
         /// 客户
         /// </summary>
-        [Column,Nullable]
+        [Column, NotNull]
         public string Client { get; set; }
         /// <summary>
         /// 经营单位
         /// </summary>
-        [Column, Nullable]
+        [Column, NotNull]
         public string Company { get; set; }
         /// <summary>
         /// 品名
         /// </summary>
-        [Column,Nullable]
+        [Column, NotNull]
         public string Production { get; set; }
         /// <summary>
         /// 提单号
@@ -148,6 +154,20 @@ namespace EE.BM.Model
 
         public bool IsVaild()
         {
+            Type type = typeof(ReceiptModel);
+
+            foreach (var property in type.GetProperties())
+            {
+                var required = property.GetCustomAttribute(typeof(NotNullAttribute)) != null ||
+                    property.GetCustomAttribute(typeof(PrimaryKeyAttribute)) != null ? true : false;
+                if (required)
+                {
+                    if (property.GetValue(this) == null)
+                    {
+                        return false;
+                    }
+                }
+            }
             return true;
         }
     }

@@ -38,6 +38,8 @@ namespace EE.BM.DAL
                 rightTable.New("员工","Staff","");
                 rightTable.New("宾客","Guest","");
                 userTable.New("admin", "admin", "管理员", 1);
+                userTable.New("wywen", "820809", "宾客", 2);
+                userTable.New("user", "user", "宾客", 3);
             }
         }
 

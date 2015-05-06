@@ -79,12 +79,55 @@ namespace EE.BM.DAL
         #endregion
 
         #region Receipt Extension
+        /// <summary>
+        /// search by ID
+        /// </summary>
+        /// <param name="Receipt"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public static ReceiptModel Receipt_Find(this ITable<ReceiptModel> Receipt, int ID)
         {
             return Receipt.FirstOrDefault(r=>r.ID == ID);
         }
-
-        private static ReceiptModel Receipt_Insert(this ITable<ReceiptModel> Receipt, string Client, string Company, string Production,
+        /// <summary>
+        /// Search by single number
+        /// </summary>
+        /// <param name="Receipt"></param>
+        /// <param name="SingleNo"></param>
+        /// <returns></returns>
+        public static ReceiptModel Receipt_Find(this ITable<ReceiptModel> Receipt, string SingleNo)
+        {
+            return Receipt.FirstOrDefault(r => r.SingleNo == SingleNo);
+        }
+        /// <summary>
+        /// Insert a new record
+        /// </summary>
+        /// <param name="Receipt"></param>
+        /// <param name="Client"></param>
+        /// <param name="Company"></param>
+        /// <param name="Production"></param>
+        /// <param name="BLNO"></param>
+        /// <param name="Container"></param>
+        /// <param name="AnimalNo"></param>
+        /// <param name="Place"></param>
+        /// <param name="IsCommercial"></param>
+        /// <param name="IsAnimal"></param>
+        /// <param name="IsHealth"></param>
+        /// <param name="Remark"></param>
+        /// <param name="DiseaseFee"></param>
+        /// <param name="DisinfectFee"></param>
+        /// <param name="DiseaseChequeNo"></param>
+        /// <param name="DisinfectChequeNo"></param>
+        /// <param name="Mobile"></param>
+        /// <param name="Date"></param>
+        /// <param name="Port"></param>
+        /// <param name="Contacter"></param>
+        /// <param name="HealthNo"></param>
+        /// <param name="CommercialNo"></param>
+        /// <param name="InputTime"></param>
+        /// <param name="InputerID"></param>
+        /// <returns></returns>
+        private static ReceiptModel Receipt_Insert(this ITable<ReceiptModel> Receipt,string SingleNo, string Client, string Company, string Production,
             string BLNO, string Container, string AnimalNo, string Place, bool IsCommercial, bool IsAnimal, bool IsHealth,
             string Remark, decimal DiseaseFee, decimal DisinfectFee, string DiseaseChequeNo, string DisinfectChequeNo,
             string Mobile, string Date, string Port, string Contacter, string HealthNo, string CommercialNo,DateTime InputTime, int InputerID)
@@ -93,6 +136,7 @@ namespace EE.BM.DAL
             {
                 int iResult = Receipt.Insert(() => new ReceiptModel()
                 {
+                    SingleNo = SingleNo,
                     Client = Client,
                     Company = Company,
                     Production = Production,
@@ -131,7 +175,7 @@ namespace EE.BM.DAL
 
         public static bool Receipt_Insert(this ITable<ReceiptModel> Receipt, ref ReceiptModel receiptModel)
         {
-            ReceiptModel newRecord = Receipt.Receipt_Insert(receiptModel.Client,receiptModel.Company,receiptModel.Production,receiptModel.BLNO,receiptModel.Container,receiptModel.AnimalNo
+            ReceiptModel newRecord = Receipt.Receipt_Insert(receiptModel.SingleNo, receiptModel.Client, receiptModel.Company, receiptModel.Production, receiptModel.BLNO, receiptModel.Container, receiptModel.AnimalNo
                 , receiptModel.Place,receiptModel.IsCommercial,receiptModel.IsAnimal,receiptModel.IsHealth,receiptModel.Remark,receiptModel.DiseaseFee,
                 receiptModel.DisinfectFee,receiptModel.DiseaseChequeNo,receiptModel.DisinfectChequeNo,receiptModel.Mobile,receiptModel.YearMonth,receiptModel.Port,receiptModel.Contacter,
                 receiptModel.HealthNo,receiptModel.CommercialNo,receiptModel.InputTime,receiptModel.InputerID);
@@ -146,18 +190,25 @@ namespace EE.BM.DAL
                 return true;
             }
         }
-
+        /// <summary>
+        /// update a exist record
+        /// </summary>
+        /// <param name="Receipt"></param>
+        /// <param name="receiptModel"></param>
+        /// <returns></returns>
         public static bool Receipt_Update(this ITable<ReceiptModel> Receipt, ReceiptModel receiptModel)
         {
             //return Receipt.Where(u => u.ID == receiptModel.ID).Update((u) => receiptModel) > 0 ? true : false;
             return Receipt.Update(r => r.ID == receiptModel.ID, r => receiptModel) > 0 ? true : false;
             
         }
-
+        /// <summary>
+        /// update a exist record
+        /// </summary>
         public static int Receipt_Update(this DataConnection dataConnection, int? @id, string @Client, string @Company, string @Production,
             string @BLNO, string @Container, string @AnimalNo, string @Place, bool @IsCommercial, bool @IsAnimal, bool @IsHealth,
             string @Remark, decimal @DiseaseFee, decimal @DisinfectFee, string @DiseaseChequeNo, string @DisinfectChequeNo,
-            string @Mobile, string @YearMonth, string @Contacter)
+            string @Mobile, string @YearMonth, string @Contacter, string @Port, string @CommercialNo, string @HealthNo)
         {
             return dataConnection.ExecuteProc("[Receipt_Update]",
                 new DataParameter("@id", @id), new DataParameter("@Client", @Client),
@@ -169,22 +220,36 @@ namespace EE.BM.DAL
                 new DataParameter("@Remark", @Remark), new DataParameter("@DiseaseFee", @DiseaseFee),
                 new DataParameter("@DisinfectFee", @DisinfectFee), new DataParameter("@DiseaseChequeNo", @DiseaseChequeNo),
                 new DataParameter("@DisinfectChequeNo", @DisinfectChequeNo), new DataParameter("@Mobile", @Mobile),
-                new DataParameter("@Contacter",@Contacter));
+                new DataParameter("@Contacter",@Contacter), new DataParameter("@Port",@Port),
+                new DataParameter("@CommercialNo",@CommercialNo), new DataParameter("@HealthNo",@HealthNo));
         }
-
+        /// <summary>
+        /// update a exist record
+        /// </summary>
         public static bool Receipt_Update(this DataConnection dataConnection, ReceiptModel receiptModel)
         {
             return dataConnection.Receipt_Update(receiptModel.ID, receiptModel.Client, receiptModel.Company, receiptModel.Production, receiptModel.BLNO, receiptModel.Container, receiptModel.AnimalNo
                 , receiptModel.Place, receiptModel.IsCommercial, receiptModel.IsAnimal, receiptModel.IsHealth, receiptModel.Remark, receiptModel.DiseaseFee,
-                receiptModel.DisinfectFee, receiptModel.DiseaseChequeNo, receiptModel.DisinfectChequeNo, receiptModel.Mobile, receiptModel.YearMonth,receiptModel.Contacter) > 0 ? true : false;
+                receiptModel.DisinfectFee, receiptModel.DiseaseChequeNo, receiptModel.DisinfectChequeNo, receiptModel.Mobile, receiptModel.YearMonth,
+                receiptModel.Contacter,receiptModel.Port,receiptModel.CommercialNo,receiptModel.HealthNo) > 0 ? true : false;
         }
 
-
+        /// <summary>
+        /// delete a exist record
+        /// </summary>
+        /// <param name="Receipt"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public static bool Receipt_Delete(this ITable<ReceiptModel> Receipt, int ID)
         {
             return Receipt.Where(u => u.ID == ID).Delete() > 0 ? true : false;
         }
-
+        
+        /// <summary>
+        /// get port list from database
+        /// </summary>
+        /// <param name="Receipt"></param>
+        /// <returns></returns>
         public static ICollection<object> GetPortList(this ITable<ReceiptModel> Receipt)
         {
             List<object> portList = new List<object>();

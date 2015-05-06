@@ -13,6 +13,17 @@ namespace  EE.BM
         public Func<object, bool> CanExecuteCommand = null;
         public event EventHandler CanExecuteChanged;
 
+        private string name;
+        public string CommandName
+        {
+            get { return name; }
+        }
+
+        public DelegateCommand(string commandName)
+        {
+            this.name = commandName;
+        }
+
 
         private int isEnabled;
 

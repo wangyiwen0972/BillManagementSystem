@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="EE.BM.View.userToolBar"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="w"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:my="clr-namespace:EE.BM.View"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <StackPanel Orientation="Horizontal" Height="32" Margin="5" Width="{Binding ElementName=w,Path=Width}"  DockPanel.Dock="Top" Background="Transparent">
+            <Button Name="btnNew" Margin="5,0,0,0" Click="btnNew_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/Document.png" Height="32"/>
+                    <TextBlock Text="新建" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnOpen" Margin="5,0,0,0" Click="btnOpen_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/Generic Folder smooth.png"/>
+                    <TextBlock Text="打开" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnSave" Margin="5,0,0,0" Click="btnSave_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/Save.png" Height="32"/>
+                    <TextBlock Text="保存" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnCopy" Margin="5,0,0,0" Click="btnCopy_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/Copy_Document.png"/>
+                    <TextBlock Text="复制" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnDelete" Click="btnDelete_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/Page remove.png"/>
+                    <TextBlock Text="删除" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnPreview" Margin="5,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/Page preview.png" Height="32"/>
+                    <TextBlock Text="打印预览" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnPrint" Margin="5,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/Folder Printer.png" Height="32"/>
+                    <TextBlock Text="打印" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnExportToIdecl" Margin="5,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/idecl.png" Height="32"/>
+                    <TextBlock Text="导出到九城单证" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+            <Button Name="btnClose" Margin="5,0,0,0" Click="btnClose_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/BMStudio;component/resources/close.png" Height="32"/>
+                    <TextBlock Text="关闭" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

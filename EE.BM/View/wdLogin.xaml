@@ -16,8 +16,8 @@
                     <Button Name="btnLogin" Style="{StaticResource ResourceKey=ButtonGeneral}"  Content="登陆" Width="80" Height="20" HorizontalAlignment="Left" Margin="0,10,0,0" Click="btnLogin_Click" />
                     <Button Name="btnRegister" Style="{StaticResource ResourceKey=ButtonGeneral}" Content="注册" Width="80" Height="20" HorizontalAlignment="Left" Margin="100,-22,0,0" Command="{Binding RegisterCommand}" CommandParameter="{Binding ElementName=txtPassword}"/>
                 </StackPanel>
-                <StackPanel DockPanel.Dock="Right" Background="#FFE6EFF8">
-                    
+                <StackPanel DockPanel.Dock="Right" Background="White" >
+                    <Image Source="/BMStudio;component/resources/background.png" VerticalAlignment="Top"/>
                 </StackPanel>
             </DockPanel>
         </Border>
