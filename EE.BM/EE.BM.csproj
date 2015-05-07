@@ -101,6 +101,9 @@
     <Compile Include="View\wdOpen.xaml.cs">
       <DependentUpon>wdOpen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\wdRegister.xaml.cs">
+      <DependentUpon>wdRegister.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\Theme\Blue\WindowBaseStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,6 +125,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\wdOpen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\wdRegister.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

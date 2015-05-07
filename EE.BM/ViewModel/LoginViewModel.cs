@@ -84,15 +84,22 @@ namespace EE.BM
                 throw new Exception("用户名、密码不许为空。");
             }
 
-            UserModel userModel = dbConnection.GetTable<UserModel>().Find(UserName, UserPassword);
+            UserModel userModel = dbConnection.GetTable<UserModel>().Find(UserName);
 
             if (userModel == null)
             {
-                throw new Exception("用户名、密码错误。请联系管理员。");
+                throw new Exception("用户名不存在。请先注册。");
             }
             else
             {
-                loginUser = userModel;
+                if (userModel.Password != UserPassword)
+                {
+                    throw new Exception("密码错误，请联系管理员。");
+                }
+                else
+                {
+                    loginUser = userModel;
+                }
             }
         }
 
@@ -102,7 +109,9 @@ namespace EE.BM
 
             try
             {
-                
+                UserModel userModel = dbConnection.GetTable<UserModel>().Find(UserName);
+
+
             }
             catch
             {

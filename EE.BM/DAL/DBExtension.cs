@@ -18,9 +18,9 @@ namespace EE.BM.DAL
             return User.FirstOrDefault<UserModel>(u => u.ID == ID);
         }
 
-        public static UserModel Find(this ITable<UserModel> User, string userName, string password)
+        public static UserModel Find(this ITable<UserModel> User, string userName)
         {
-            return User.FirstOrDefault<UserModel>(u => u.LoginName.ToLower() == userName.ToLower() && u.Password == password);
+            return User.FirstOrDefault<UserModel>(u => u.LoginName.ToLower() == userName.ToLower());
         }
 
         public static bool New(this ITable<UserModel> User, string userName,string password,string display, int rightID)
