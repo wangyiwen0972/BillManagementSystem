@@ -45,6 +45,12 @@ namespace EE.BM.View
             {
                 var specifiedReceipt = reciptVM.locateReceiptBySingleNo(openWindow.SearchText);
 
+                if (specifiedReceipt == null)
+                {
+                    MessageBox.Show("无此单证号");
+                    return;
+                }
+
                 var newReceiptDetail = new userDetail()
                 {
                     DataContext = new ReceiptViewModel(reciptVM.GetCurrentLoginUser(), specifiedReceipt)

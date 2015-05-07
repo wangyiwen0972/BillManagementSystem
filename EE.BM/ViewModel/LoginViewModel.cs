@@ -106,15 +106,31 @@ namespace EE.BM
         private void Register(object parameter)
         {
             PasswordBox pb = parameter as PasswordBox;
-
+            
             try
             {
+                if (string.IsNullOrEmpty(UserName))
+                {
+                    throw new Exception("用户名不允许为空。");
+                }
+                if (string.IsNullOrEmpty(pb.Password))
+                {
+                    throw new Exception("密码不允许为空。");
+                }
                 UserModel userModel = dbConnection.GetTable<UserModel>().Find(UserName);
 
+                if (userModel != null)
+                {
+                    throw new Exception("该用户已存在，请重新填写用户名。");
+                }
+                //reg new user as staff permission
+                dbConnection.GetTable<UserModel>().New(UserName, pb.Password, UserName, 2);
 
+                ShowMessage("注册新用户成功");
             }
-            catch
+            catch(Exception ex)
             {
+                throw ex;
             }
         }
         #endregion

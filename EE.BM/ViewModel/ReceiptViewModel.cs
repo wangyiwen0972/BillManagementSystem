@@ -22,7 +22,7 @@
         //basic connection of database
         private BMConnection connection = null;
 
-        private bool isInvaild = false;
+        
 
         #endregion
 
@@ -616,7 +616,7 @@
         /// 保存
         /// </summary>
         [Permission(1, BM.Action.Executable)]
-        [Permission(2, BM.Action.Visible)]
+        [Permission(2, BM.Action.Executable)]
         [Permission(3, BM.Action.Invisible)]
         public DelegateCommand SaveCommand
         {
@@ -1012,6 +1012,8 @@
             component.SetCells(1, 15, "消毒费", workSheet);
             component.SetCells(1, 16, "检支票", workSheet);
             component.SetCells(1, 17, "消支票", workSheet);
+            component.SetCells(1, 18, "联系人", workSheet);
+            component.SetCells(1, 19, "联系电话", workSheet);
         }
 
         private void generateExcelCell(int row, ReceiptModel receipt, ExcelExport component, Microsoft.Office.Interop.Excel._Worksheet workSheet)
@@ -1033,6 +1035,8 @@
             component.SetCells(row, 15, receipt.DisinfectFee.ToString(), workSheet);
             component.SetCells(row, 16, receipt.DiseaseChequeNo, workSheet);
             component.SetCells(row, 17, receipt.DisinfectChequeNo, workSheet);
+            component.SetCells(row, 18, receipt.Contacter, workSheet);
+            component.SetCells(row, 19, receipt.Mobile, workSheet);
         }
         #endregion
 

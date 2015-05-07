@@ -158,11 +158,12 @@ namespace EE.BM.Model
 
             foreach (var property in type.GetProperties())
             {
-                var required = property.GetCustomAttribute(typeof(NotNullAttribute)) != null ||
-                    property.GetCustomAttribute(typeof(PrimaryKeyAttribute)) != null ? true : false;
+                var required = (property.GetCustomAttributes(typeof(NotNullAttribute),true) != null && property.GetCustomAttributes(typeof(NotNullAttribute),true).Count() > 0)
+                    || (property.GetCustomAttributes(typeof(PrimaryKeyAttribute),true) != null && property.GetCustomAttributes(typeof(PrimaryKeyAttribute),true).Count() > 0) ? true : false;
+                    
                 if (required)
                 {
-                    if (property.GetValue(this) == null)
+                    if (property.GetValue(this,null) == null)
                     {
                         return false;
                     }

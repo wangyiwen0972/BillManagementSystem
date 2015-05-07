@@ -68,7 +68,7 @@ namespace EE.BM.Utility
             {
                 if (property.Name.Equals(delegateCommand.CommandName, StringComparison.OrdinalIgnoreCase))
                 {
-                    var permissionList = property.GetCustomAttributes<PermissionAttribute>();
+                    var permissionList = property.GetCustomAttributes(typeof(PermissionAttribute),true);
 
                     foreach (PermissionAttribute permission in permissionList)
                     {
