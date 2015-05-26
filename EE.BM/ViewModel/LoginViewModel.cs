@@ -168,5 +168,19 @@ namespace EE.BM
         {
             OutputMessage += string.Format("{0}: {1}{2}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), message, Environment.NewLine);
         }
+
+
+        public ResXDataAccess ResxDataAccess
+        {
+            get
+            {
+                string folder = System.IO.Path.Combine(Environment.CurrentDirectory, "Resource");
+                return new ResXDataAccess(folder);
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

@@ -56,6 +56,21 @@
         }
         #endregion
 
+        #region Properties
+        public ResXDataAccess ResxDataAccess
+        {
+            get
+            {
+                string folder = System.IO.Path.Combine(Environment.CurrentDirectory, "Resource");
+                return new ResXDataAccess(folder);
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        #endregion
+
         #region View Model Properties
         /// <summary>
         /// 录入员

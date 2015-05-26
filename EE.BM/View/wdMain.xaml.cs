@@ -15,6 +15,7 @@ using EE.BM.DAL;
 using EE.BM.Utility;
 using Microsoft.Win32;
 using System.Reflection;
+using System.Globalization;
 
 namespace EE.BM.View
 {
@@ -33,17 +34,39 @@ namespace EE.BM.View
             this.Loaded += (s, e) =>
                 {
                     InitializePermissionForComponenet();
-
+                    InitializeCultureForUI();
                     this.userReceiptDetail.DataContext = reciptVM;
                 };            
         }
 
+        /// <summary>
+        /// initialize permission for each component
+        /// </summary>
         private void InitializePermissionForComponenet()
         {
             reciptVM = this.DataContext as ReceiptViewModel;
 
             //export to excel
             base.SetEnableVisible(this.btnExport, base.GetPermission(reciptVM.ExportToExcelCommand, reciptVM));
+
+        }
+
+        private void InitializeCultureForUI()
+        {
+            if (reciptVM == null) reciptVM = this.DataContext as ReceiptViewModel;
+
+            List<object> searchKeyList = new List<object>();
+
+            ResXDataAccess resource = reciptVM.ResxDataAccess;
+
+            foreach (KeyValuePair<string, string> keyValue in resource.Load(CultureInfo.CurrentCulture.DisplayName))
+            {
+                if (keyValue.Key.IndexOf("search", StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    resource.TryGetValue(
+                }
+            }
+            
 
         }
 

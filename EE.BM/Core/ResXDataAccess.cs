@@ -9,9 +9,11 @@ using System.Globalization;
 
 namespace EE.BM
 {
-    class ResXDataAccess
+    public class ResXDataAccess
     {
         private string folderLocation;
+
+        private Dictionary<string, string> dictResX = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of the ResXDataAccess class.
@@ -27,7 +29,7 @@ namespace EE.BM
         /// </summary>
         /// <param name="locale">The locale to load.</param>
         /// <returns>The xml containing the resx key value pairs.</returns>
-        public IXPathNavigable Load(string locale)
+        public void Load(string locale)
         {
             string fileName = string.Format(CultureInfo.InvariantCulture, "{0}.resx", Path.Combine(this.folderLocation, locale));
 
@@ -36,10 +38,40 @@ namespace EE.BM
                 XmlDocument resXFileName = new XmlDocument();
                 resXFileName.Load(fileName);
 
-                return resXFileName;
-            }
+                Dictionary<string, string> dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            return null;
+                foreach (XmlNode node in resXFileName.SelectNodes("//data"))
+                {
+                    XPathNavigator nav = node.CreateNavigator();
+
+                    string key = nav.GetAttribute("name","");
+                    string value = string.Empty;
+                    XPathNodeIterator iter = nav.SelectChildren(XPathNodeType.Element);
+                    while (iter.MoveNext())
+                    {
+                        value = iter.Current.Value;
+                        break;
+                    }
+                    if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
+                    {
+                        dictResX.Add(key, value);
+                    }
+                }
+            }
+        }
+
+        public bool TryGetValue(string key, out string value)
+        {
+            value = string.Empty;
+
+            if (dictResX == null || dictResX.Count == 0) return false;
+
+            if (dictResX.TryGetValue(key, out value))
+            {
+                return true;
+            }
+            
+            return false;
         }
     }
 }

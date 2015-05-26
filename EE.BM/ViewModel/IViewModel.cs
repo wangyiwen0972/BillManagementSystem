@@ -19,6 +19,8 @@ namespace EE.BM
         void SetCurrentStats(ViewModelStatus status);
         UserModel GetCurrentLoginUser();
         void ShowMessage(string message);
+
+        ResXDataAccess ResxDataAccess { get; set; }
     }
 
     public enum ViewModelStatus
