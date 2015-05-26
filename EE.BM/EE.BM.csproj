@@ -72,6 +72,7 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Core\NotificationObject.cs" />
     <Compile Include="Core\PermissionAttribute.cs" />
+    <Compile Include="Core\ResXDataAccess.cs" />
     <Compile Include="DAL\DBConnection.cs" />
     <Compile Include="DAL\DBExtension.cs" />
     <Compile Include="Export\Excel.cs" />
@@ -79,6 +80,11 @@
     <Compile Include="Model\ReceiptModel.cs" />
     <Compile Include="Model\RightModel.cs" />
     <Compile Include="Model\UserModel.cs" />
+    <Compile Include="Resources\zh-cn.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>zh-cn.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utility\Helper.cs" />
     <Compile Include="ViewModel\IViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
@@ -154,6 +160,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\zh-cn.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>zh-cn.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="LinqToDB.Templates\!ReadMe.LinqToDB.md" />
     <None Include="LinqToDB.Templates\DataAnnotations.ttinclude" />

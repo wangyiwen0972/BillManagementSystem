@@ -80,6 +80,7 @@ namespace EE.BM.View
 
         private void InitializePermissionForComponenet()
         {
+            if (this.DataContext == null) return;
             reciptVM = this.DataContext as ReceiptViewModel;
 
             //get permission for the commands

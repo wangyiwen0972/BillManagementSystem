@@ -362,9 +362,9 @@
                     <DockPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5,0,0,0">
                             <TextBlock VerticalAlignment="Center" Margin="5">查询栏：</TextBlock>
-                            <ComboBox Width="100" Height="25" Margin="5"/>
+                            <ComboBox Width="100" Height="25" Margin="5" Name="cbSearchList"/>
                             <TextBlock VerticalAlignment="Center" Margin="5">操作符：</TextBlock>
-                            <ComboBox Width="100" Height="25" Margin="5">
+                            <ComboBox Name="cbSearchOperator" Width="100" Height="25" Margin="5">
                                 <ComboBoxItem>&lt;</ComboBoxItem>
                                 <ComboBoxItem>&lt;=</ComboBoxItem>
                                 <ComboBoxItem>=</ComboBoxItem>
@@ -373,20 +373,27 @@
                                 <ComboBoxItem>Contains</ComboBoxItem>
                             </ComboBox>
                             <TextBlock VerticalAlignment="Center" Margin="5">关键字：</TextBlock>
-                            <TextBox Width="200" Margin="5"/>
+                            <TextBox Name="txtSearchKey" Width="200" Margin="5"/>
                             <TextBlock VerticalAlignment="Center" Margin="5">逻辑操作符：</TextBlock>
-                            <ComboBox Width="80" Height="25" Margin="5" HorizontalContentAlignment="Center">
+                            <ComboBox Name="cbLogicOperator" Width="80" Height="25" Margin="5" HorizontalContentAlignment="Center">
                                 <ComboBoxItem IsSelected="True" >无</ComboBoxItem>
                                 <ComboBoxItem>或</ComboBoxItem>
                                 <ComboBoxItem>与</ComboBoxItem>
                             </ComboBox>
+                            <Button Name="btnAddC" Width="80" Height="25" Content="添加" Style="{StaticResource ButtonGeneral}" Margin="5"/>
                         </StackPanel>
                         
                         <TextBlock DockPanel.Dock="Top" Margin="10,5,0,0">组合查询框：</TextBlock>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                            <ListBox Width="500" DockPanel.Dock="Top" Height="64" Margin="10" HorizontalAlignment="Left"></ListBox>
-                            <Button Width="80" Height="25" Content="查询" Style="{StaticResource ButtonGeneral}"/>
+                            <ListBox Width="500" DockPanel.Dock="Top" Height="80" Margin="10" HorizontalAlignment="Left"></ListBox>
+                            <StackPanel Orientation="Vertical" Margin="0,5,0,0">
+                                <Button Name="btnMergeC" Width="60" Height="20" Content="条件合并" Style="{StaticResource ButtonGeneral}" Margin="5"/>
+                                <Button Name="btnRemoveC" Width="60" Height="20" Content="移除条件" Style="{StaticResource ButtonGeneral}" Margin="5"/>
+                                <Button Name="btnClearC" Width="60" Height="20" Content="清空条件" Style="{StaticResource ButtonGeneral}" Margin="5"/>
+                            </StackPanel>
+                            
                         </StackPanel>
+                        <Button Name="btnSearch" Width="80" Height="25" Content="查询" Style="{StaticResource ButtonGeneral}" Margin="15,0,0,15" DockPanel.Dock="Top" HorizontalAlignment="Left"/>
                         <DataGrid DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" Height="500" Width="996" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="月份" Binding="{Binding YearMonth}" Width="80"/>

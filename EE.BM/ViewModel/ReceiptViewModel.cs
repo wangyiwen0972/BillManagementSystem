@@ -11,6 +11,7 @@
     using EE.BM.Utility;
     using EE.BM.Export;
     using System.IO;
+    using System.Resources;
 
     public class ReceiptViewModel : NotificationObject,IViewModel
     {
@@ -510,6 +511,24 @@
             }
         }
 
+        private string searchKey;
+
+        public string SearchKey
+        {
+            get { return searchKey; }
+            set { base.SetProperty<string>(ref searchKey, value, () => this.SearchKey); }
+        }
+
+        private string searchValue;
+
+        public string SearchValue
+        {
+            get { return searchValue; }
+            set 
+            {
+                base.SetProperty<string>(ref searchValue, value, () => this.SearchValue);
+            }
+        }
 
         #endregion
 
@@ -571,6 +590,20 @@
         {
             get { return yearList; }
             set { base.SetProperty<ObservableCollection<object>>(ref yearList, value, () => this.YearList); }
+        }
+
+        private ObservableCollection<object> searchKeyList = new ObservableCollection<object>();
+
+        public ObservableCollection<object> SearchKeyList
+        {
+            get
+            {
+                if (searchKeyList.Count == 0)
+                {
+                    
+                }
+                return searchKeyList;
+            }
         }
 
 
